@@ -60,7 +60,7 @@
                     //This will insert in company if alert server new is 1 it is alert that will be issued if other device is selected. First entry will be made then id will be selected
 
                     $read=$pdo->prepare('SELECT * from company where name = :name');
-                    $read->execute(array(':name'=>$_POST['device-name2']));
+                    $read->execute(array(':name'=>$_POST['company2']));
                     $rowr=$read->fetch(PDO::FETCH_ASSOC);
 
                     if($rowr == false)
@@ -89,12 +89,25 @@
 
 
 
-             if($_POST['alert-server-new-supplier']=='1')
+            if($_POST['alert-server-new-supplier']=='1')
                 {
                     //This will insert in company if alert server new is 1 it is alert that will be issued if other device is selected. First entry will be made then id will be selected
-                    $req=$pdo->prepare('INSERT INTO supplier(supname) VALUES(:supname)');
-                    $req->execute(array(':supname'=>$_POST['supplier2']));
-                    $smn=$_POST['supplier2'];
+
+
+                    $req=$pdo->prepare('SELECT * from supplier where supname = :supname');
+                $req->execute(array(':supname'=>$_POST['supplier']));
+                $rowrr=$req->fetch(PDO::FETCH_ASSOC);
+                if($rowrr == false)
+                {
+                    $req=$pdo->prepare('INSERT INTO name(name) VALUES(:name)');
+                    $req->execute(array(':name'=>$_POST['supplier']));
+                    $supname=$_POST['supplier'];    
+                }
+                else
+                {
+                    $supname=$_POST['supplier2'];
+                }
+
                 }
                 else 
                     $smn=$_POST['supplier'];
