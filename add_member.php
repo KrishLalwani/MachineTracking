@@ -19,7 +19,7 @@
 
     if(isset($_POST['id']) )
     {
-        if ( strlen($_POST['id']) < 1 || strlen($_POST['first_name']) < 1 || strlen($_POST['last_name']) < 1 || strlen($_POST['email']) < 1 || strlen($_POST['pass']) < 1 || strlen($_POST['c_pass']) < 1)
+        if ( strlen($_POST['id']) < 1 || strlen($_POST['first_name']) < 1 || strlen($_POST['last_name']) < 1 || strlen($_POST['email']) < 1 || strlen($_POST['pass']) < 1 || strlen($_POST['c_pass']) < 1|| strlen($_POST['contact_no']) < 1)
         {
             $_SESSION['error'] = "All Fields are required";
             header('Location: add_member.php');
@@ -48,8 +48,8 @@
                 else
                 {
                     $check = hash('md5', $salt.$_POST['pass']);
-                    $stmt = $pdo->prepare('INSERT INTO member (id, first_name, last_name, email, pass_word ) VALUES (:id, :fn, :ln, :em, :pw)');
-                    $stmt->execute(array(':id' => $_POST['id'], ':fn' => $_POST['first_name'], ':ln' => $_POST['last_name'], ':em' => $_POST['email'], ':pw' => $check));
+                    $stmt = $pdo->prepare('INSERT INTO member (id, first_name, last_name, email, pass_word ,role,contact_no) VALUES (:id, :fn, :ln, :em, :pw,"2",:cn)');
+                    $stmt->execute(array(':id' => $_POST['id'], ':fn' => $_POST['first_name'], ':ln' => $_POST['last_name'], ':em' => $_POST['email'], ':pw' => $check,':cn' => $_POST['contact_no']));
 
                     $_SESSION['success'] = "Member Added Successfully";
                     header('Location: home.php');
@@ -106,21 +106,31 @@
     <div class="input-group">
     <span class="input-group-addon">ID</span>
     <input type="text" name="id" required="" class="form-control"> </div><br/>
+
     <div class="input-group">
     <span class="input-group-addon">First Name</span>
     <input type="text" name="first_name" required="" class="form-control"> </div><br/>
+
     <div class="input-group">
     <span class="input-group-addon">Last Name</span>
     <input type="text" name="last_name" required="" class="form-control"> </div><br/>
+
     <div class="input-group">
     <span class="input-group-addon">Email</span>
     <input type="email" name="email" required="" class="form-control"> </div><br/>
+
+    <div class="input-group">
+      <span class="input-group-addon">Contact No.</span>
+      <input type="text" name="contact_no" class="form-control" required placeholder="Enter a valid Contact number"> </div><br/>
+
     <div class="input-group">
     <span class="input-group-addon">Password</span>
     <input type="password" name="pass" required="" class="form-control"> </div><br/>
+
     <div class="input-group">
     <span class="input-group-addon">Confirm Password</span>
     <input type="password" required="" name="c_pass" class="form-control"> </div><br/>
+    
     <input type="submit" value="Sign Up" class="btn btn-info">
     <a class ="link-no-format" href="home.php"><div class="btn btn-my">Cancel</div></a>
     </form>
