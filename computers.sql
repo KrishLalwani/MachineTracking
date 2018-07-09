@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 09, 2018 at 07:31 AM
+-- Generation Time: Jul 09, 2018 at 12:44 PM
 -- Server version: 10.1.33-MariaDB
 -- PHP Version: 7.2.6
 
@@ -84,9 +84,7 @@ CREATE TABLE `hardware` (
 --
 
 INSERT INTO `hardware` (`hardware_id`, `company`, `description`, `price`, `grn`, `name`, `state`, `supplier`) VALUES
-(169, 13, 'as', 12, 1, 12, 0, NULL),
 (170, 1, 'Alphastar ka keyboard', 132, 44, 2, 0, NULL),
-(171, 1, 'asd', 12, 1, 12, 0, NULL),
 (172, 1, 'asd', 123, 1, 14, 0, NULL),
 (173, 14, '3', 1, 3, 14, 0, NULL),
 (174, 1, 'bjk', NULL, 1, 6, 1, NULL),
@@ -101,6 +99,43 @@ INSERT INTO `hardware` (`hardware_id`, `company`, `description`, `price`, `grn`,
 (183, 16, 'ln', NULL, 1, 1, 1, NULL),
 (184, 16, 'lknkl', NULL, 1, 2, 1, NULL),
 (185, 16, 'nk', NULL, 1, 3, 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hardware_position`
+--
+
+CREATE TABLE `hardware_position` (
+  `hardware_position_id` int(11) NOT NULL,
+  `hardware_id` int(11) DEFAULT NULL,
+  `lab_id` int(11) DEFAULT NULL,
+  `member_id` int(11) DEFAULT NULL,
+  `initial_date` date DEFAULT NULL,
+  `final_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `issue_request`
+--
+
+CREATE TABLE `issue_request` (
+  `issue_report_id` int(11) NOT NULL,
+  `department` varchar(30) DEFAULT NULL,
+  `id` int(11) DEFAULT NULL,
+  `purpose` text,
+  `date_of_request` date DEFAULT NULL,
+  `name_of_hardware` int(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `issue_request`
+--
+
+INSERT INTO `issue_request` (`issue_report_id`, `department`, `id`, `purpose`, `date_of_request`, `name_of_hardware`) VALUES
+(3, 'CS', 0, 'Halwa', '2018-07-09', 1);
 
 -- --------------------------------------------------------
 
@@ -148,7 +183,6 @@ CREATE TABLE `machine` (
 --
 
 INSERT INTO `machine` (`machine_id`, `MAC_ADDR`, `processor`, `ram`, `memory`, `DOP`, `price`, `state`, `os`, `monitor`, `keyboard`, `mouse`, `grn`) VALUES
-(42, '122', 175, 174, 176, '2012-12-12', 0, 'ACTIVE', 'bjk', 179, 178, 177, 1),
 (43, '134', 181, 180, 182, '2001-12-21', 0, 'ACTIVE', 'lnk', 185, 184, 183, 1);
 
 -- --------------------------------------------------------
@@ -163,19 +197,21 @@ CREATE TABLE `member` (
   `first_name` varchar(30) DEFAULT NULL,
   `last_name` varchar(30) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `pass_word` varchar(512) DEFAULT NULL
+  `pass_word` varchar(512) DEFAULT NULL,
+  `role` int(5) DEFAULT NULL,
+  `contact_no` int(13) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `member`
 --
 
-INSERT INTO `member` (`member_id`, `id`, `first_name`, `last_name`, `email`, `pass_word`) VALUES
-(0, '0', 'Krish', 'Lalwani', 'krishlalwani1@gmail.com', '4f2a91d6913739834ec9c3d4f9203534'),
-(2, '11', 'new', 'one', 'new@one.com', '4f2a91d6913739834ec9c3d4f9203534'),
-(3, '12', 'new', 'two', 'new@two.com', '4f2a91d6913739834ec9c3d4f9203534'),
-(4, '111', 'Harsh', 'Manglani', 'harsh@manglani.com', '4f2a91d6913739834ec9c3d4f9203534'),
-(5, '101', '1qwe', 'qwer', 'krishlalwani1@gmail.com', '4f2a91d6913739834ec9c3d4f9203534');
+INSERT INTO `member` (`member_id`, `id`, `first_name`, `last_name`, `email`, `pass_word`, `role`, `contact_no`) VALUES
+(0, '0', 'Krish', 'Lalwani', 'krishlalwani1@gmail.com', '4f2a91d6913739834ec9c3d4f9203534', NULL, NULL),
+(2, '11', 'new', 'one', 'new@one.com', '4f2a91d6913739834ec9c3d4f9203534', NULL, NULL),
+(3, '12', 'new', 'two', 'new@two.com', '4f2a91d6913739834ec9c3d4f9203534', NULL, NULL),
+(4, '111', 'Harsh', 'Manglani', 'harsh@manglani.com', '4f2a91d6913739834ec9c3d4f9203534', NULL, NULL),
+(5, '101', '1qwe', 'qwer', 'krishlalwani1@gmail.com', '4f2a91d6913739834ec9c3d4f9203534', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -328,6 +364,22 @@ ALTER TABLE `hardware`
   ADD KEY `supplier` (`supplier`);
 
 --
+-- Indexes for table `hardware_position`
+--
+ALTER TABLE `hardware_position`
+  ADD PRIMARY KEY (`hardware_position_id`),
+  ADD KEY `FK_HW` (`hardware_id`),
+  ADD KEY `FK_LAB` (`lab_id`),
+  ADD KEY `FK_MEM` (`member_id`);
+
+--
+-- Indexes for table `issue_request`
+--
+ALTER TABLE `issue_request`
+  ADD PRIMARY KEY (`issue_report_id`),
+  ADD KEY `fK_issue` (`name_of_hardware`);
+
+--
 -- Indexes for table `lab`
 --
 ALTER TABLE `lab`
@@ -423,6 +475,18 @@ ALTER TABLE `hardware`
   MODIFY `hardware_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=186;
 
 --
+-- AUTO_INCREMENT for table `hardware_position`
+--
+ALTER TABLE `hardware_position`
+  MODIFY `hardware_position_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `issue_request`
+--
+ALTER TABLE `issue_request`
+  MODIFY `issue_report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `lab`
 --
 ALTER TABLE `lab`
@@ -500,6 +564,20 @@ ALTER TABLE `hardware`
   ADD CONSTRAINT `FK_company` FOREIGN KEY (`company`) REFERENCES `company` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_name` FOREIGN KEY (`name`) REFERENCES `name` (`name_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `hardware_ibfk_1` FOREIGN KEY (`supplier`) REFERENCES `supplier` (`sup_id`);
+
+--
+-- Constraints for table `hardware_position`
+--
+ALTER TABLE `hardware_position`
+  ADD CONSTRAINT `FK_HW` FOREIGN KEY (`hardware_id`) REFERENCES `hardware` (`hardware_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_LAB` FOREIGN KEY (`lab_id`) REFERENCES `lab` (`lab_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_MEM` FOREIGN KEY (`member_id`) REFERENCES `member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `issue_request`
+--
+ALTER TABLE `issue_request`
+  ADD CONSTRAINT `fK_issue` FOREIGN KEY (`name_of_hardware`) REFERENCES `name` (`name_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `machine`
