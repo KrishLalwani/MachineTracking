@@ -56,7 +56,7 @@
                 <select class="form-control" id="processor" name="processor">
                     <option>Any</option>
                     <?php
-                        $qr=$pdo->query("SELECT description from hardware where name = $processoriddb");
+                        $qr=$pdo->query("SELECT DISTINCT(description) from hardware where name = $processoriddb");
                         while($row=$qr->fetch(PDO::FETCH_ASSOC))
                         {
                             echo "<option>". $row['description']."</option>";
@@ -67,7 +67,7 @@
                 <select class="form-control" id="ram" name="ram">
                     <option>Any</option>           
                     <?php
-                        $qr=$pdo->query("SELECT description from hardware where name = $ramiddb");
+                        $qr=$pdo->query("SELECT DISTINCT(description) from hardware where name = $ramiddb");
                         while($row=$qr->fetch(PDO::FETCH_ASSOC))
                         {
                             echo "<option>". $row['description']."</option>";
@@ -78,7 +78,7 @@
                 <select class="form-control" id="memory" name="memory">
                     <option>Any</option> 
                     <?php
-                        $qr=$pdo->query("SELECT description from hardware where name = $memoryiddb");
+                        $qr=$pdo->query("SELECT DISTINCT(description) from hardware where name = $memoryiddb");
                         while($row=$qr->fetch(PDO::FETCH_ASSOC))
                         {
                             echo "<option>". $row['description']."</option>";
