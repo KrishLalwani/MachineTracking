@@ -42,7 +42,7 @@
 
     if(isset($_POST['mac_addr']) )
     {
-        if ( strlen($_POST['mac_addr']) < 1 || strlen($_POST['processor']) < 1 || strlen($_POST['ram']) < 1 || strlen($_POST['memory']) < 1 || strlen($_POST['price']) < 1 || strlen($_POST['dop']) < 1)
+        if ( strlen($_POST['mac_addr']) < 1 || strlen($_POST['price']) < 1 || strlen($_POST['dop']) < 1)
         {
             $_SESSION['error'] = "All Fields are required";
             header('Location: addmc.php');
