@@ -141,7 +141,7 @@
                     $stmt->execute(array(
                         ':description_ram'=>$_POST['ram'],
                         ':description_processor'=>$_POST['processor'],
-                        ':description_hd'=>$_POST['memory'],
+                        ':description_hd'=>$_POST['harddisk'],
                         ':description_mouse'=>$_POST['mouse'],
                         ':description_keyboard'=>$_POST['keyboard'],
                         ':description_monitor'=>$_POST['monitor'],
@@ -262,7 +262,7 @@
     
     <div class="input-group">
     <span class="input-group-addon">Storage </span>
-    <select id="drop-other" name="storage" class="form-control" onchange="Device();" required="">
+    <select id="drop-other" name="harddisk" class="form-control" onchange="Device();" required="">
         <?php
             
             $qr=$pdo->query("SELECT spec,spec_id from specification where name_id=4");
