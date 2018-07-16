@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 16, 2018 at 07:53 AM
+-- Generation Time: Jul 16, 2018 at 12:17 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.20
 
@@ -101,7 +101,7 @@ CREATE TABLE `hardware` (
 --
 
 INSERT INTO `hardware` (`hardware_id`, `company`, `description`, `price`, `grn`, `name`, `state`, `supplier`) VALUES
-(302, 19, 2, NULL, 1, 6, 1, 1),
+(302, 19, 2, NULL, 1, 6, 0, 1),
 (303, 19, 1, NULL, 1, 5, 1, 1),
 (304, 19, 1, NULL, 1, 4, 1, 1),
 (305, 19, 4, NULL, 1, 1, 1, 1),
@@ -208,20 +208,19 @@ CREATE TABLE `machine` (
   `monitor` int(11) NOT NULL,
   `keyboard` int(11) NOT NULL,
   `mouse` int(11) NOT NULL,
-  `grn` int(11) NOT NULL,
-  `generation` varchar(10) DEFAULT NULL
+  `grn` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `machine`
 --
 
-INSERT INTO `machine` (`machine_id`, `MAC_ADDR`, `processor`, `ram`, `memory`, `DOP`, `price`, `state`, `os`, `monitor`, `keyboard`, `mouse`, `grn`, `generation`) VALUES
-(59, '1', 303, 302, 304, '2018-07-08', 123, 'INACTIVE', '1', 307, 306, 305, 1, 'i5'),
-(60, '12', 309, 308, 310, '2018-07-15', 20000, 'INACTIVE', 'Windows', 313, 312, 311, 1, 'i7'),
-(61, '33', 315, 314, 316, '2018-07-01', 12345, 'ACTIVE', 'windows', 319, 318, 317, 33, NULL),
-(62, '34', 321, 320, 322, '2018-07-01', 12345, 'ACTIVE', 'windows', 325, 324, 323, 33, NULL),
-(63, '35', 327, 326, 328, '2018-07-01', 12345, 'ACTIVE', 'windows', 331, 330, 329, 33, NULL);
+INSERT INTO `machine` (`machine_id`, `MAC_ADDR`, `processor`, `ram`, `memory`, `DOP`, `price`, `state`, `os`, `monitor`, `keyboard`, `mouse`, `grn`) VALUES
+(59, '1', 303, 302, 304, '2018-07-08', 123, 'INACTIVE', '1', 307, 306, 305, 1),
+(60, '12', 309, 308, 310, '2018-07-15', 20000, 'INACTIVE', 'Windows', 313, 312, 311, 1),
+(61, '33', 315, 314, 316, '2018-07-01', 12345, 'ACTIVE', 'windows', 319, 318, 317, 33),
+(62, '34', 321, 320, 322, '2018-07-01', 12345, 'ACTIVE', 'windows', 325, 324, 323, 33),
+(63, '35', 327, 326, 328, '2018-07-01', 12345, 'ACTIVE', 'windows', 331, 330, 329, 33);
 
 -- --------------------------------------------------------
 
@@ -446,6 +445,13 @@ CREATE TABLE `transfer_request` (
   `os` varchar(20) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `transfer_request`
+--
+
+INSERT INTO `transfer_request` (`transfer_request_id`, `date_of_request`, `name`, `department`, `purpose`, `processor`, `ram`, `hdd`, `os`, `quantity`) VALUES
+(1, '2018-07-16', 'dfd', 'dfsdfs', 'sdfdsf', '1', '2', '1', '', 1);
 
 -- --------------------------------------------------------
 
@@ -698,12 +704,12 @@ ALTER TABLE `system_transfer_report`
 -- AUTO_INCREMENT for table `temp`
 --
 ALTER TABLE `temp`
-  MODIFY `temp_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `temp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `transfer_request`
 --
 ALTER TABLE `transfer_request`
-  MODIFY `transfer_request_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `transfer_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `upgrade_history`
 --
