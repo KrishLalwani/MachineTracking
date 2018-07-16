@@ -45,9 +45,13 @@
         ":idate" => $dat,
         ":fdate" => '0-0-0'
     ));
-    $_SESSION['success'].="Hardware Issued";
-    header("Location:home.php");
-    return;
+    $stmt=$pdo->prepare("UPDATE hardware SET state = '1' WHERE hardware_id = :id");
+    $stmt->execute(array(":id"=>$request['name_of_hardware']));
+    $stmt=$pdo->prepare("DELETE FROM issue_request WHERE issue_report_id = :id");
+    $stmt->execute(array(":id"=>$_GET['id']));
+//    $_SESSION['success'].="Hardware Issued";
+  //  header("Location:home.php");
+    //return;
     
 ?>
 <html>

@@ -10,8 +10,6 @@
     }
     require_once "pdo.php";
 
-    //Selecting id of procssors,ram and memory from name table
-
     $processor = $pdo->query("SELECT name_id FROM name where name = 'processor'");
     $processorn = $processor->fetch(PDO::FETCH_ASSOC);
     $processorn=$processorn['name_id'];
@@ -20,7 +18,7 @@
     $ramn = $ram->fetch(PDO::FETCH_ASSOC);
     $ramn=$ramn['name_id'];
 
-    $memory = $pdo->query("SELECT name_id FROM name where name = 'harddisk'");
+    $memory = $pdo->query("SELECT name_id FROM name where name = 'memory'");
     $memoryn = $memory->fetch(PDO::FETCH_ASSOC);
     $memoryn=$memoryn['name_id'];
 
@@ -46,9 +44,6 @@
                 <select class="form-control" id="processor" name="processor">
                     <option value="-1">Any</option>
                     <?php
-
-                    //This query will select all distinct(description) and hardware_id from hardware table and name will be equal to processor number selected in line 13 
-
                         $qr=$pdo->query("SELECT DISTINCT(description) from hardware AS G1 JOIN(SELECT hardware_id,description as g2d from hardware where name = $processorn.) AS G2 ON G1.description=G2.g2d");
                         while($row=$qr->fetch(PDO::FETCH_ASSOC))
                         {
@@ -61,9 +56,6 @@
                 <select class="form-control" id="ram" name="ram">
                     <option value='-1'>Any</option>           
                     <?php
-
-                    //This query will select all distinct(description) and hardware_id from hardware table and name will be equal to ram number selected in line 13 
-                    
                         $qr=$pdo->query("SELECT DISTINCT(description) from hardware AS G1 JOIN(SELECT hardware_id,description as g2d from hardware where name = $ramn.) AS G2 ON G1.description=G2.g2d");
                         while($row=$qr->fetch(PDO::FETCH_ASSOC))
                         {
@@ -76,10 +68,7 @@
                 <select class="form-control" id="memory" name="memory">
                     <option value='-1'>Any</option> 
                     <?php
-                
-                    //This query will select all distinct(description) and hardware_id from hardware table and name will be equal to memory number selected in line 13 
-
-                        $qr=$pdo->query("SELECT DISTINCT(description) from hardware AS G1 JOIN(SELECT hardware_id, description as g2d from hardware where name = '$memoryn') AS G2 ON G1.description=G2.g2d");
+                        $qr=$pdo->query("SELECT DISTINCT(description) from hardware AS G1 JOIN(SELECT hardware_id,description as g2d from hardware where name = $memoryn.) AS G2 ON G1.description=G2.g2d");
                        // $qr=$pdo->query("SELECT distinct(os) from machine");
                         while($row=$qr->fetch(PDO::FETCH_ASSOC))
                         {
@@ -92,7 +81,6 @@
                 <select class="form-control" id="os" name="os">
                     <option value='-1'>Any</option>
                     <?php
-                    //AS OS is stored directly in machine table simple query is used
                         $qr=$pdo->query("SELECT distinct(os) from machine");
                         while($row=$qr->fetch(PDO::FETCH_ASSOC))
                         {
@@ -116,157 +104,137 @@
             echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
             unset($_SESSION['error']);
         }
-
-        //Now this code does all the magic
         if(isset($_POST['processor'])||isset($_POST['ram'])||isset($_POST['memory'])||isset($_POST['os']))
-        {
-            //Checking if machine exsists
-            $stmtcnt = $pdo->query("SELECT COUNT(*) FROM machine ");
-            $row = $stmtcnt->fetch(PDO::FETCH_ASSOC);
-
-            if($row['COUNT(*)']!=='0')
+            if($_POST['processor']!="Any"||$_POST['ram']!="Any"||$_POST['memory']!="Any"||$_POST['os']!="Any")
             {
-                /*The query has 4 parts hard
-                    
-                */
-                $i=1;
-                $cond="";
-                $join="";
-                $ans="";
-                $f=0;
-                if($_POST['processor']!=-1)
+                //echo('<p><a href="logout.php">Logout</a></p>');
+                $stmtcnt = $pdo->query("SELECT COUNT(*) FROM machine ");
+                $row = $stmtcnt->fetch(PDO::FETCH_ASSOC);
+
+                if($row['COUNT(*)']!=='0')
                 {
-                    if($f!='1')
+                    $i=1;
+                    $cond="";
+                    $join="";
+                    $ans="";
+                    $f=0;
+                    if($_POST['processor']!=-1)
                     {
-                        $join.=" INNER JOIN hardware ";
-                        $cond.=" ON( machine.processor= hardware.hardware_id ";
-                        $ans.=" ( hardware.description = "."'".$_POST['processor']."'";
+                        if($f!='1')
+                        {
+                            $join.=" INNER JOIN hardware ";
+                            $cond.=" WHERE machine.processor= hardware.hardware_id ";
+                            $ans.=" AND hardware.description = "."'".$_POST['processor']."'";
+                        }
+                        else
+                        {
+                            $cond.=" AND machine.processor=hardware.hardware_id ";
+                            $ans.=" OR hardware.description = ".$_POST['processor']."' ";
+                        }
+                        $f=1;
                     }
-                    else
+                    if($_POST['memory']!=-1)
                     {
-                        $cond.=" OR machine.processor=hardware.hardware_id ";
-                        $ans.=" AND hardware.description = ".$_POST['processor']."' ";
+                        if($f!='1')
+                        {
+                            $join.=" INNER JOIN hardware ";
+                            $cond.=" WHERE machine.memory=hardware.hardware_id ";
+                            $ans.=" AND hardware.description = "."'".$_POST['memory']."' ";
+                        }
+                        else
+                        {
+                            $cond.=" AND machine.memory=hardware.hardware_id ";
+                            $ans.=" OR hardware.description = "."'".$_POST['memory']."' ";
+                        }
+                        $f=1;
                     }
-                    $f=1;
+                    if($_POST['ram']!=-1)
+                    {
+                        if($f!='1')
+                        {
+                            $join.=" INNER JOIN hardware ";
+                            $cond.=" WHERE machine.ram=hardware.hardware_id ";
+                            $ans.=" AND hardware.description = "."'".$_POST['ram']."' ";
+                        }
+                        else
+                        {
+                            $cond.="AND machine.ram=hardware.hardware_id ";
+                            $ans.=" OR hardware.description = "."'".$_POST['ram']."' ";
+                        }
+                        $f=1;
+                    }
+                    if($_POST['os']!=-1)
+                    {
+                        if($f==0)
+                            $cond.=" where os = "."'".$_POST['os']."'"." ";
+                        else
+                            $cond.=" AND os = "."'".$_POST['os']."'"." ";
+                        $f=1;
+                        $inj.=" ':proc' =>". $_POST['os'] ;
+                    }
+
+
+                    $query="SELECT * FROM machine ".$join.$cond.$ans."ORDER BY MAC_ADDR";
+                    echo $query;
+                    $stmtread = $pdo->query($query);
+                    echo ("<table class=\"table table-striped\">
+                        <tr> <th>S.no.</th><th>MAC ADDRESS</th><th>Processor</th><th>RAM</th><th>Storage</th><th>OS</th><th>DOP</th><th>Price</th><th>Location</th> <th>State</th></tr>");
+                    while ( $row = $stmtread->fetch(PDO::FETCH_ASSOC) )
+                    {
+                        $stmtn = $pdo->prepare("SELECT lab_id FROM position where machine_id = :mid AND final_date = '1970-01-01'");
+                        $stmtn->execute(array(':mid' => $row['machine_id']));
+                        $rown = $stmtn->fetch(PDO::FETCH_ASSOC);
+                        $stmtn2 = $pdo->prepare("SELECT name FROM lab where lab_id = :lid");
+                        $stmtn2->execute(array(':lid' => $rown['lab_id']));
+                        $rown2 = $stmtn2->fetch(PDO::FETCH_ASSOC);
+
+                        $stmtn3=$pdo->prepare("SELECT description from hardware where hardware_id=:hid");
+                        $stmtn3->execute(array(':hid' => $row['processor']));
+                        $rown3 = $stmtn3->fetch(PDO::FETCH_ASSOC);
+
+                           
+
+                        echo ("<tr>");
+                        echo ("<td>");
+                        echo($i);
+                        echo("</td>");
+                        echo ("<td>");
+                        echo(htmlentities($row['MAC_ADDR']));
+                        echo ("</td>");
+                        echo ("<td>");
+                        echo(htmlentities($rown3['description']));
+                        echo ("</td>");
+                        echo ("<td>");
+                        echo(htmlentities($row['ram']));
+                        echo ("</td>");
+                        echo ("<td>");
+                        echo(htmlentities($row['memory']));
+                        echo ("</td>");
+                        echo ("<td>");
+                        echo(htmlentities($row['os']));
+                        echo ("</td>");
+                        echo ("<td>");
+                        echo(htmlentities($row['DOP']));
+                        echo ("</td>");
+                        echo ("<td>");
+                        echo(htmlentities($row['price']));
+                        echo ("</td>");
+                        echo ("<td>");
+                        echo(htmlentities($rown2['name']));
+                        echo ("</td>");
+                        echo ("<td>");
+                        echo(htmlentities($row['state']));
+                        echo ("</td>");                
+                        $i++;
+                    }
+                    echo('</table>');
                 }
-                if($_POST['memory']!=-1)
-                {
-                    if($f!='1')
-                    {
-                        $join.=" INNER JOIN hardware ";
-                        $cond.=" ON( machine.memory=hardware.hardware_id ";
-                        $ans.=" ( hardware.description = "."'".$_POST['memory']."' ";
-                    }
-                    else
-                    {
-                        $cond.=" OR machine.memory=hardware.hardware_id ";
-                        $ans.=" AND hardware.description = "."'".$_POST['memory']."' ";
-                    }
-                    $f=1;
-                }
-                if($_POST['ram']!=-1)
-                {
-                    if($f!='1')
-                    {
-                        $join.=" INNER JOIN hardware ";
-                        $cond.=" OR( machine.ram=hardware.hardware_id ";
-                        $ans.=" ( hardware.description = "."'".$_POST['ram']."' ";
-                    }
-                    else
-                    {
-                        $cond.="OR machine.ram=hardware.hardware_id ";
-                        $ans.=" AND hardware.description = "."'".$_POST['ram']."' ";
-                    }
-                    $f=1;
-                }
-                if($_POST['os']!=-1)
-                {
-                    if($f==0)
-                        $cond.=" where os = "."'".$_POST['os']."'"." ";
-                    else
-                        $cond.=" OR os = "."'".$_POST['os']."'"." ";
-                    $f=1;
-                    $inj.=" ':proc' =>". $_POST['os'] ;
-                }
-
-                //Ye ri query
-
-                if(strlen($cond)!=0)
-                    $cond.=')';
-                if(strlen($ans)!=0)
-                    $ans.=')';
-                $query="SELECT machine.`machine_id`, machine.`MAC_ADDR`, machine.`processor`,machine.`ram`, machine.`memory`, machine.`DOP`, machine.`price`, machine.`state`, machine.`os`, machine.`monitor`, machine.`keyboard`, machine.`mouse`, machine.`grn` FROM machine ".$join.$cond." AND ".$ans." ORDER BY MAC_ADDR";
-                echo $query;
-
-                $stmtread = $pdo->query($query);
-                echo ("<table class=\"table table-striped\">
-                    <tr> <th>S.no.</th><th>MAC ADDRESS</th><th>Processor</th><th>RAM</th><th>Storage</th><th>OS</th><th>DOP</th><th>Price</th><th>Location</th> <th>State</th></tr>");
-                while ( $row = $stmtread->fetch(PDO::FETCH_ASSOC) )
-                {
-                    $stmtn = $pdo->prepare("SELECT lab_id FROM position where machine_id = :mid AND final_date = '1970-01-01'");
-
-                    $stmtn->execute(array(':mid' => $row['machine_id']));
-                    $rown = $stmtn->fetch(PDO::FETCH_ASSOC);
-
-                    $stmtn2 = $pdo->prepare("SELECT name FROM lab where lab_id = :lid");
-                    $stmtn2->execute(array(':lid' => $rown['lab_id']));
-                    $rownlabid = $stmtn2->fetch(PDO::FETCH_ASSOC);
-
-                    $stmtn3=$pdo->prepare("SELECT description from hardware where hardware_id=:hid");
-                    $stmtn3->execute(array(':hid' => $row['processor']));
-                    $rownprocessor = $stmtn3->fetch(PDO::FETCH_ASSOC);
-                       
-
-                    $stmtn3=$pdo->prepare("SELECT description from hardware where hardware_id=:hid");
-                    $stmtn3->execute(array(':hid' => $row['memory']));
-                    $rownmemory = $stmtn3->fetch(PDO::FETCH_ASSOC);
-
-
-                    $stmtn3=$pdo->prepare("SELECT description from hardware where hardware_id=:hid");
-                    $stmtn3->execute(array(':hid' => $row['ram']));
-                    $rownram = $stmtn3->fetch(PDO::FETCH_ASSOC);
-
-                    echo ("<tr>");
-                    echo ("<td>");
-                    echo($i);
-                    echo("</td>");
-                    echo ("<td>");
-                    echo(htmlentities($row['MAC_ADDR']));
-                    echo ("</td>");
-                    echo ("<td>");
-                    echo(htmlentities($rownprocessor['description']));
-                    echo ("</td>");
-                    echo ("<td>");
-                    echo(htmlentities($rownram['description']));
-                    echo ("</td>");
-                    echo ("<td>");
-                    echo(htmlentities($rownmemory['description']));
-                    echo ("</td>");
-                    echo ("<td>");
-                    echo(htmlentities($row['os']));
-                    echo ("</td>");
-                    echo ("<td>");
-                    echo(htmlentities($row['DOP']));
-                    echo ("</td>");
-                    echo ("<td>");
-                    echo(htmlentities($row['price']));
-                    echo ("</td>");
-                    echo ("<td>");
-                    echo(htmlentities($rownlabid['name']));
-                    echo ("</td>");
-                    echo ("<td>");
-                    echo(htmlentities($row['state']));
-                    echo ("</td>");                
-                    $i++;
-                }
-                echo('</table>');
             }
-        }
     ?>
 
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>                        
-
+    <script src="https://ajax.googleapis.com                        $stmtn3->execute(array(':hid' => $_POST['processor']));
+/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="script.js"></script>
 </body>
