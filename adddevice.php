@@ -90,11 +90,11 @@
 
 
             if($_POST['alert-server-new-supplier']=='1')
-                {
-                    //This will insert in company if alert server new is 1 it is alert that will be issued if other device is selected. First entry will be made then id will be selected
+            {
+                //This will insert in company if alert server new is 1 it is alert that will be issued if other device is selected. First entry will be made then id will be selected
 
 
-                    $req=$pdo->prepare('SELECT * from supplier where supname = :supname');
+                $req=$pdo->prepare('SELECT * from supplier where supname = :supname');
                 $req->execute(array(':supname'=>$_POST['supplier']));
                 $rowrr=$req->fetch(PDO::FETCH_ASSOC);
                 if($rowrr == false)
@@ -108,15 +108,37 @@
                     $supname=$_POST['supplier2'];
                 }
 
+            }
+            else 
+                $smn=$_POST['supplier'];
+           
+            //Adding description
+            if($_POST['alert-server-new-description']=='1')
+            {
+                $req=$pdo->prepare("SELECT * FROM hardware WHERE description = :desc and name =:name");
+                $req->execute(array(":desc"=>$_POST['description2'],":name"=>$name_id));
+                $rowr=$req->fetch(PDO::FETCH_ASSOC);
+                if($rowr == false)
+                {
+                    $req=$pdo->prepare("INSERT INTO specification (spec,name_id) VALUES(:spec,:name_id)");
+                    $req->execute(array(":spec"=>$_POST['description2'],":name_id"=>$name_id));
                 }
-                else 
-                    $smn=$_POST['supplier'];
-               
-                $req2 = $pdo->prepare("SELECT sup_id from supplier where supname = :name");
-                $req2->execute(array(":name" => $smn));
-                $row = $req2->fetch(PDO::FETCH_ASSOC);
-                $supplier_id=$row['sup_id'];
-
+                $stmt=$pdo->prepare("SELECT spec_id FROM specification WHERE spec=:spec AND name_id=:name");
+                $stmt->execute(array(":spec"=>$_POST['description2'],":name"=>$name_id));
+                $descriptionid=$stmt->fetch(PDO::FETCH_ASSOC);
+                $descriptionid=$descriptionid['spec_id'];
+            }
+            else
+            {
+                $stmt=$pdo->prepare("SELECT spec_id FROM specification WHERE spec=:spec AND name_id=:name");
+                $stmt->execute(array(":spec"=>$_POST['description'],":name"=>$name_id));
+                $descriptionid=$stmt->fetch(PDO::FETCH_ASSOC);
+                $descriptionid=$descriptionid['spec_id'];
+            }
+            $req2 = $pdo->prepare("SELECT sup_id from supplier where supname = :name");
+            $req2->execute(array(":name" => $smn));
+            $row = $req2->fetch(PDO::FETCH_ASSOC);
+            $supplier_id=$row['sup_id'];
 
 
 
@@ -127,7 +149,7 @@
             $stmt = $pdo->prepare('INSERT INTO hardware (company, description, price, grn, name, state,supplier) VALUES (:company, :description, :price, :grn, :name, 0,:smn)');
             $stmt->execute(array(
                 ':company' => $company_id,
-             ':description' => $_POST['description'], 
+             ':description' => $descriptionid, 
              ':price' => $_POST['price'], 
              ':grn' => $_POST['grn'],
              ':name' => $name_id,
@@ -184,7 +206,7 @@
 
         <div class="input-group">
         <span class="input-group-addon">Device Name </span>
-        <select name="device-name" id="drop-name" class="form-control" onchange="Name();" required="">
+        <select name="device-name" id="drop-name" class="form-control" onchange="Device();fetch_select(this.value);" required="">
         <?php
             
             $qr=$pdo->query("SELECT DISTINCT name from name");
@@ -200,13 +222,13 @@
         </div><br/>
         <div class="input-group">
             <span class="input-group-addon">New Device Name </span>
-            <input name="device-name2" type="text" class="form-control" name="device_name" id="other-device" placeholder="Enter New Device Name" onchange="Other('other-device')">
+            <input name="device-name2" type="text" class="form-control" name="device_name" id="hide-drop-name" placeholder="Enter New Device Name" onchange="Other('other-device')">
         </div><br>
         <input type="text" name="alert-server-new-device" value="1" id="alert-server-new-device" hidden>
         
         <div class="input-group">
         <span class="input-group-addon">Company Name</span>
-        <select id="drop-other" name="company" class="form-control" onchange="Device();" required="">
+        <select id="drop-other" name="company" class="form-control" onchange="Company();" required="">
         <?php
             
             $qr=$pdo->query("SELECT DISTINCT name from company");
@@ -252,13 +274,17 @@
 
 
 
-
-
-
-        <div class="input-group">
-        <span class="input-group-addon">Description </span>
-        <input type="text" name="description" required class="form-control"> </div><br/>
-
+     <div class="input-group">
+        <span class="input-group-addon">Description</span>
+        <select id="drop-description" name="description" class="form-control" onchange="Description();" required="">
+    </select>
+    </div><br>
+    <div class="input-group">
+        <span class="input-group-addon">New Description</span>   
+        <input type="text" class="form-control" name="description2" id="other-description" onchange="Other('other-supplier')">
+    </div><br>
+    <input type="text" id="alert-server-new-description" name="alert-server-new-description" value="1" hidden>
+    
         <div class="input-group">
         <span class="input-group-addon">Price </span>
         <input type="text" name="price" required class="form-control" id="pr" onchange="Number('pr')"> </div><br/>
@@ -277,5 +303,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript">
+        
+
+    </script>
 </body>
 </html>

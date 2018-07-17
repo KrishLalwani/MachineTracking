@@ -89,6 +89,7 @@
     <div class="input-group">
     <span class="input-group-addon">Processor</span>
     <select name=processor class="form-control" required="">
+        <option value="NULL">Any</option>
         <?php
             
             $qr=$pdo->query("SELECT * from name where name = 'processor'");
@@ -99,7 +100,11 @@
             while($rowx=$qr->fetch(PDO::FETCH_ASSOC))
             {
                 echo '<option>';
-                echo ($rowx['description']);
+                $pro = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
+                $pro->execute(array(':spec_id' => $rowx['description']));
+                $pron = $pro->fetch(PDO::FETCH_ASSOC);
+                echo($pron['spec']);
+                
                 echo '</option>';
             }
          ?>
@@ -109,6 +114,7 @@
     <div class="input-group">
     <span class="input-group-addon">Ram</span>
     <select name=ram class="form-control" required="">
+        <option value="NULL">Any</option>
         <?php
             $qr=$pdo->query("SELECT * from name where name = 'ram'");
             $rowtmp=$qr->fetch(PDO::FETCH_ASSOC);
@@ -118,7 +124,11 @@
             while($rowx=$qr->fetch(PDO::FETCH_ASSOC))
             {
                 echo '<option>';
-                echo ($rowx['description']);
+                $pro = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
+                $pro->execute(array(':spec_id' => $rowx['description']));
+                $pron = $pro->fetch(PDO::FETCH_ASSOC);
+                echo($pron['spec']);
+                
                 echo '</option>';
             }
          ?>
@@ -128,6 +138,7 @@
     <div class="input-group">
     <span class="input-group-addon">Storage</span>
     <select name=hdd class="form-control" required="">
+        <option value="NULL">Any</option>
         <?php
             $qr=$pdo->query("SELECT * from name where name = 'harddisk'");
             $rowtmp=$qr->fetch(PDO::FETCH_ASSOC);
@@ -137,7 +148,10 @@
             while($rowx=$qr->fetch(PDO::FETCH_ASSOC))
             {
                 echo '<option>';
-                echo ($rowx['description']);
+                $pro = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
+                $pro->execute(array(':spec_id' => $rowx['description']));
+                $pron = $pro->fetch(PDO::FETCH_ASSOC);
+                echo($pron['spec']);
                 echo '</option>';
             }
          ?>
@@ -146,7 +160,13 @@
 
     <div class="input-group">
     <span class="input-group-addon">OS </span>
-    <input type="text" name="os" class="form-control"> </div><br/>
+    <select id="drop-other" name="os" class="form-control" onchange="Device();" required="">
+       <option value="NULL">Any</option>
+       <option value="windows">Windows</option>
+       <option value="linux">Linux</option>
+       <option value="osx">OS X</option>
+   </select>
+     </div><br/>
     
     <div class="input-group">
     <span class="input-group-addon">Quantity</span>

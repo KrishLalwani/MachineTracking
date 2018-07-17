@@ -170,27 +170,53 @@ X-UA-Compatible<?php
                 echo ("<td>");
                 echo($i);
                 echo("</td>");
+                
                 echo ("<td>");
                 echo(htmlentities($_POST['mac_addr']));
                 echo ("</td>");
+                
                 echo ("<td>");
-                echo ($processori['description']);
+                $pro = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
+                $pro->execute(array(':spec_id' => $processori['description']));
+                $proi = $pro->fetch(PDO::FETCH_ASSOC);
+                echo($proi['spec']);
                 echo ("</td>");
+                
                 echo ("<td>");
-                echo($rami['description']);
+                $ram = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
+                $ram->execute(array(':spec_id' => $rami['description']));
+                $rami = $ram->fetch(PDO::FETCH_ASSOC);
+                echo($rami['spec']);
                 echo ("</td>");
+                
                 echo ("<td>");
-                echo($memoryi['description']);
+                $memory = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
+                $memory->execute(array(':spec_id' => $memoryi['description']));
+                $memoryi = $memory->fetch(PDO::FETCH_ASSOC);
+                echo($memoryi['spec']);
                 echo ("</td>");
+                
                 echo ("<td>");
-                echo($processorf['description']);
+                $pro = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
+                $pro->execute(array(':spec_id' => $processorf['description']));
+                $prof = $pro->fetch(PDO::FETCH_ASSOC);
+                echo($prof['spec']);
                 echo ("</td>");
+                
                 echo ("<td>");
-                echo($ramf['description']);
+                $ram = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
+                $ram->execute(array(':spec_id' => $ramf['description']));
+                $ramf = $ram->fetch(PDO::FETCH_ASSOC);
+                echo($ramf['spec']);
                 echo ("</td>");
+                
                 echo ("<td>");
-                echo($memoryf['description']);
+                $memory = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
+                $memory->execute(array(':spec_id' => $memoryf['description']));
+                $memoryf = $memory->fetch(PDO::FETCH_ASSOC);
+                echo($memoryf['spec']);
                 echo ("</td>");
+                
                 echo ("<td>");
                 echo($row['dateofupgrade']);
                 echo ("</td>");
