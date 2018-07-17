@@ -79,7 +79,7 @@
 
     <div class="input-group">
     <span class="input-group-addon">Department </span>
-    <input type="text" name="department" required="" class="form-control"> </div><br/>
+    <input type="text" name="department" required="" class="form-control" placeholder="Department Name"> </div><br/>
 
     <div class="input-group">
     <span class="input-group-addon">Purpose</span>
@@ -170,7 +170,7 @@
     
     <div class="input-group">
     <span class="input-group-addon">Quantity</span>
-    <input type="number" name="quantity" required class="form-control"> </div><br/>
+    <input type="number" name="quantity" required class="form-control" placeholder="No. of Computers"> </div><br/>
     
     
 

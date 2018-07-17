@@ -21,7 +21,6 @@
                  
                 
                 $date=date('y-m-d');
-                $_SESSION['error'].=var_dump($_POST['hardware_id']);
                 $stmt = $pdo->prepare('INSERT INTO `issue_request`( `department`, `id`, `purpose`, `date_of_request`, `name_of_hardware`) VALUES (:department,:id,:purpose, :dat,:hardware)');
                     $stmt->execute(array(':dat' => date('y-m-d'),
                       ':department' => $_POST['department'],
@@ -34,6 +33,7 @@
                         header("Location:home.php");
                     else
                         header('Location: index.php');
+                        
                     return;
             
 
@@ -92,7 +92,13 @@
                 $qr=$pdo->query("SELECT *,COUNT(*) FROM hardware WHERE state=0 GROUP BY description");
                 while($row=$qr->fetch(PDO::FETCH_ASSOC))
                 {
-                    echo "<option value=".$row['hardware_id'].">".$row['description']."</option>";
+                    $pro = $pdo->prepare("SELECT spec FROM specification where spec_id = :name_id");
+                    $pro->execute(array(':name_id' => $row['description']));
+                    $name=$pdo->prepare("SELECT name from name where name_id = :name");
+                    $name->execute(array(":name"=>$row['name']));
+                    $namer=$name->fetch(PDO::FETCH_ASSOC);
+                    $pron = $pro->fetch(PDO::FETCH_ASSOC);
+                    echo "<option value=".$row['hardware_id'].">".$namer['name'].' '.$pron['spec']."</option>";
                 }
             ?>   
     </select>

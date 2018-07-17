@@ -222,7 +222,7 @@
         </div><br/>
         <div class="input-group">
             <span class="input-group-addon">New Device Name </span>
-            <input name="device-name2" type="text" class="form-control" name="device_name" id="hide-drop-name" placeholder="Enter New Device Name" onchange="Other('other-device')">
+            <input name="device-name2" type="text" class="form-control" name="device_name" id="hide-drop-name" placeholder="Enter New Device Name" onchange="Other('hide-drop-name')">
         </div><br>
         <input type="text" name="alert-server-new-device" value="1" id="alert-server-new-device" hidden>
         
@@ -244,7 +244,7 @@
     </div><br>
     <div class="input-group">
         <span class="input-group-addon">New Company Name</span>   
-        <input type="text" class="form-control" name="company2" id="hide-drop-other" onchange="Other('hide-drop-other')">
+        <input type="text" class="form-control" name="company2" id="hide-drop-other" onchange="Other('hide-drop-other')" placeholder="Enter New Company Name">
     </div><br>
     <input type="text" id="alert-server-new" name="alert-server-new" value="1" hidden>
 
@@ -268,7 +268,7 @@
     </div><br>
     <div class="input-group">
         <span class="input-group-addon">New Supplier Name</span>   
-        <input type="text" class="form-control" name="supplier2" id="other-supplier" onchange="Other('other-supplier')">
+        <input type="text" class="form-control" name="supplier2" id="other-supplier" onchange="Other('other-supplier')" placeholder="Enter New Supplier Name">
     </div><br>
     <input type="text" id="alert-server-new-supplier"name="alert-server-new-supplier" value="1" hidden>
 
@@ -277,21 +277,22 @@
      <div class="input-group">
         <span class="input-group-addon">Description</span>
         <select id="drop-description" name="description" class="form-control" onchange="Description();" required="">
+            <option selected="">Other</option>
     </select>
     </div><br>
     <div class="input-group">
         <span class="input-group-addon">New Description</span>   
-        <input type="text" class="form-control" name="description2" id="other-description" onchange="Other('other-supplier')">
+        <input type="text" class="form-control" name="description2" id="other-description" onchange="Other('other-supplier')" placeholder="Specification of Device">
     </div><br>
     <input type="text" id="alert-server-new-description" name="alert-server-new-description" value="1" hidden>
     
         <div class="input-group">
-        <span class="input-group-addon">Price </span>
-        <input type="text" name="price" required class="form-control" id="pr" onchange="Number('pr')"> </div><br/>
+        <span class="input-group-addon">Price of Purchase  &#8377</span>
+        <input type="text" name="price" required class="form-control" id="pr" onchange="Number('pr')" placeholder="0000000"> </div><br/>
 
         <div class="input-group">
         <span class="input-group-addon">GR No. </span>
-        <input type="text" name="grn" required class="form-control" id="gr" onchange="Number('gr')"> </div><br/>
+        <input type="text" name="grn" required class="form-control" id="gr" onchange="Number('gr')"placeholder="Good Reciept No./Bill No."> </div><br/>
 
         <input type="submit" value="Add Device" class="btn btn-info">
         <a class ="link-no-format" href="home.php"><div class="btn btn-my">Cancel</div></a>

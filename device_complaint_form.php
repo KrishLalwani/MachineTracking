@@ -7,37 +7,30 @@
         header("Location: index.php");
         return;
     }
-
-    if(isset($_POST['mac_addr']) )
+    if(!isset($_SESSION['id']))
     {
-        if ( strlen($_POST['mac_addr']) < 1 || strlen($_POST['details']) < 1 || strlen($_POST['priority']) < 1 || strlen($_POST['name']) < 1)
+        die("ERROR 403 ACCESS DENIED");
+    }
+
+    if(isset($_POST['hardware_id']) )
+    {
+        if ( strlen($_POST['hardware_id']) < 1 || strlen($_POST['details']) < 1 || strlen($_POST['priority']) < 1 || strlen($_POST['name']) < 1)
         {
             $_SESSION['error'] = "All Fields are required";
-            header('Location: complaint_form.php');
+            die("awf");
+            header('Location: device_complaint_form.php');
             return;
         }
         else
         {
-                $stmt = $pdo->prepare('SELECT * FROM machine WHERE MAC_ADDR = :mac_addr');
-                $stmt->execute(array(':mac_addr' => $_POST['mac_addr']));
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                if($row=== FALSE)
-                {
-                    $_SESSION['error'] = "Invalid MAC ADDRESS";
-                    header('Location: complaint_form.php');
-                    return;
-                }
-                $mid = $row['machine_id'];
-                
-                $stmt = $pdo->prepare('SELECT * FROM repair_history WHERE machine_id = :mid AND fault IS NULL');
-                $stmt->execute(array(':mid' => $mid));
+                $stmt = $pdo->prepare('SELECT * FROM device_repair_history WHERE hardware_id = :hid AND fault IS NULL');
+                $stmt->execute(array(':hid' => $_POST['hardware_id']));
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 if($row === FALSE)
                 {
-                    $_POST['dop']=date('y-m-d',strtotime($_POST['dop']));
-                $stmt = $pdo->prepare('INSERT INTO complaint_book (date_of_complaint, machine_id, complaint_details, priority, complaint_by) VALUES (:doc, :mid, :cd, :priority, :complaint_by)');
-                    $stmt->execute(array(':doc' => date('y-m-d'), ':mid' => $mid, ':cd' => $_POST['details'], ':priority' => $_POST['priority'], ':complaint_by' => $_POST['name']));
-                $_SESSION['success'] = "Complaint Registered Successfully";
+                    $stmt = $pdo->prepare('INSERT INTO hardware_complaint_book (date_of_complaint, hardware_id, complaint_details, priority, complaint_by) VALUES (:doc, :mid, :cd, :priority, :complaint_by)');
+                    $stmt->execute(array(':doc' => date('y-m-d'), ':mid' => $_POST['hardware_id'], ':cd' => $_POST['details'], ':priority' => $_POST['priority'], ':complaint_by' => $_POST['name']));
+                    $_SESSION['success'] = "Complaint Registered Successfully";
                     if(isset($_SESSION['id']))
                     {
                         header('Location: home.php');
@@ -83,8 +76,8 @@
     </style>
 </head>
 <body>
-                   <div class="wrapper">
-                <?php if (isset($_SESSION['id'])&&$_SESSION['id']=='0') include "navbar.php"; else include "navbar_index.php" ;?>
+    <div class="wrapper">
+    <?php if (isset($_SESSION['id'])&&$_SESSION['id']=='0') include "navbar.php"; else include "navbar_index.php" ;?>
 
     <div class="container" id="content">
     <div class="page-header">
@@ -104,11 +97,43 @@
         }
     ?>
 
-    <form method="POST" action="complaint_form.php" class="col-xs-5">
+    <form method="POST" action="device_complaint_form.php" class="col-xs-5">
 
     <div class="input-group">
-    <span class="input-group-addon">MAC ADDRESS </span>
-    <input type="text" name="mac_addr" required="" class="form-control" id="mac_addr" onchange="Number('mac_addr')" placeholder="Computer No. (only integers)"> </div><br/>
+    <span class="input-group-addon">Select Device</span>
+    <select name="hardware_id" class="form-control">
+        <?php
+            $qr=$pdo->query("SELECT description,name,hardware.hardware_id, description,hardware_position.lab_id,hardware_position.member_id FROM hardware JOIN hardware_position ON (hardware_position.hardware_id=hardware.hardware_id)");
+            while($row=$qr->fetch(PDO::FETCH_ASSOC))
+            {
+                $pro = $pdo->prepare("SELECT spec FROM specification where spec_id = :name_id");
+                $pro->execute(array(':name_id' => $row['description']));
+                $name=$pdo->prepare("SELECT name from name where name_id = :name");
+                $name->execute(array(":name"=>$row['name']));
+                $namer=$name->fetch(PDO::FETCH_ASSOC);
+                $pron = $pro->fetch(PDO::FETCH_ASSOC);
+                $labname;
+                if(!is_null($row['lab_id']))
+                {
+                    $query=$pdo->prepare("SELECT name from lab where lab_id=:labid");
+                    $query->execute(array(":labid"=>$row['lab_id']));
+                    $labname=$query->fetch(PDO::FETCH_ASSOC);
+                    $labname=$labname['name'];
+                }
+                $membername;
+                if(!is_null($row['member_id']))
+                {
+                    $query=$pdo->prepare("SELECT first_name,last_name from member where member_id=:memid");
+                    $query->execute(array(":memid"=>$row['member_id']));
+                    $membername=$query->fetch(PDO::FETCH_ASSOC);
+                    $membername=$membername['first_name'].' '.$membername['last_name'];
+                }
+
+                echo "<option value=".$row['hardware_id'].">".$namer['name'].' '.$pron['spec'].''.$labname.' '.$membername."</option>";
+            }
+        ?>   
+    </select>
+     </div><br/>
 
     <div class="input-group">
     <span class="input-group-addon">Complaint Details </span>

@@ -109,6 +109,10 @@
     </select>
     </div><br>
 
+    <div class="input-group">
+        <span class="input-group-addon">Specification </span>
+        <input type="text" name="spec" required class="form-control" placeholder="Specification of Hardware"> </div><br/>
+
         <input type="submit" value="Add Specification" class="btn btn-info">
         <a class ="link-no-format" href="home.php"><div class="btn btn-my">Cancel</div></a>
         </form>
