@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 17, 2018 at 10:56 AM
+-- Generation Time: Jul 18, 2018 at 01:13 PM
 -- Server version: 10.1.33-MariaDB
 -- PHP Version: 7.2.6
 
@@ -79,8 +79,9 @@ CREATE TABLE `complaint_book` (
 
 INSERT INTO `complaint_book` (`complaint_book_id`, `Date_of_complaint`, `machine_id`, `complaint_details`, `priority`, `work_for`, `remarks`, `complaint_by`, `processor`, `ram`, `harddisk`, `mouse`, `keyboard`, `monitor`, `DOPR`, `completed`) VALUES
 (3, '2018-07-11', 59, 'pata nhi', 5, 2, NULL, 'krish', 1, 1, NULL, NULL, NULL, NULL, '2018-07-18', -1),
-(4, '2018-07-11', 60, 'dsfjlksdfj', 2, 3, NULL, 'krsi', 1, 1, NULL, NULL, NULL, NULL, '2018-07-10', NULL),
-(5, '2018-07-17', 61, 'as', 1, NULL, NULL, 'anrug', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(4, '2018-07-11', 60, 'dsfjlksdfj', 2, 3, 'aaa', 'krsi', 1, 1, NULL, NULL, NULL, NULL, '2018-07-10', 1),
+(5, '2018-07-17', 61, 'as', 1, NULL, NULL, 'anrug', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(6, '2018-07-18', 61, 'GGGGGGGGG', 1, NULL, NULL, 'ggggggggggggg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -102,7 +103,11 @@ CREATE TABLE `device_repair_history` (
 --
 
 INSERT INTO `device_repair_history` (`repair_history_id`, `hardware_id`, `initial_date`, `final_date`, `fault`, `cost`) VALUES
-(2, 302, '2018-07-17', '0000-00-00', NULL, NULL);
+(2, 302, '2018-07-17', '2018-07-18', 'a', 1234),
+(3, 322, '2018-07-18', '2018-07-18', 'IC fautl', 1234),
+(4, 307, '2001-12-02', '2018-07-18', 'cf', 124),
+(5, 302, '1999-02-05', '0000-00-00', NULL, NULL),
+(6, 303, '2018-07-18', '0000-00-00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -127,13 +132,13 @@ CREATE TABLE `hardware` (
 
 INSERT INTO `hardware` (`hardware_id`, `company`, `description`, `price`, `grn`, `name`, `state`, `supplier`) VALUES
 (302, 19, 2, NULL, 1, 6, 3, 1),
-(303, 19, 1, NULL, 1, 5, 0, 1),
+(303, 19, 1, NULL, 1, 5, 3, 1),
 (304, 19, 1, NULL, 1, 4, 1, 1),
 (305, 19, 4, NULL, 1, 1, 1, 1),
 (306, 19, 1, NULL, 1, 2, 1, 1),
-(307, 19, 1, NULL, 1, 3, 2, 1),
-(308, 19, 16, NULL, 1, 6, 1, 2),
-(309, 19, 18, NULL, 1, 5, 1, 2),
+(307, 19, 1, NULL, 1, 3, 0, 1),
+(308, 19, 16, NULL, 1, 6, -1, 2),
+(309, 19, 18, NULL, 1, 5, -1, 2),
 (310, 19, NULL, NULL, 1, 4, 1, 2),
 (311, 19, 1, NULL, 1, 1, 1, 2),
 (312, 19, 6, NULL, 1, 2, 1, 2),
@@ -146,7 +151,7 @@ INSERT INTO `hardware` (`hardware_id`, `company`, `description`, `price`, `grn`,
 (319, 19, 9, NULL, 33, 3, 1, 1),
 (320, 19, 15, NULL, 33, 6, 1, 1),
 (321, 19, 17, NULL, 33, 5, 1, 1),
-(322, 19, 11, NULL, 33, 4, 2, 1),
+(322, 19, 11, NULL, 33, 4, 3, 1),
 (323, 19, 1, NULL, 33, 1, 1, 1),
 (324, 19, 6, NULL, 33, 2, 1, 1),
 (325, 19, 9, NULL, 33, 3, 1, 1),
@@ -155,7 +160,7 @@ INSERT INTO `hardware` (`hardware_id`, `company`, `description`, `price`, `grn`,
 (328, 19, 11, NULL, 33, 4, 1, 1),
 (329, 19, 1, NULL, 33, 1, 1, 1),
 (330, 19, 6, NULL, 33, 2, 1, 1),
-(331, 19, 9, NULL, 33, 3, 1, 1);
+(331, 19, 9, NULL, 33, 3, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -180,7 +185,11 @@ CREATE TABLE `hardware_complaint_book` (
 --
 
 INSERT INTO `hardware_complaint_book` (`hardware_complaint_book_id`, `date_of_complaint`, `hardware_id`, `complaint_details`, `priority`, `work_for`, `remarks`, `complaint_by`, `completed`) VALUES
-(1, '2018-07-17', 302, 'as', 2, 2, NULL, 'a', NULL);
+(1, '2018-07-17', 302, 'as', 2, 2, 'IC change', 'a', 1),
+(2, '2018-07-18', 322, 'Jumla', 1, 2, 'IC change', 'Anurag', 1),
+(4, '2018-07-18', 307, 'IC fault', 2, 2, '123', 'Anuarg', 1),
+(5, '2018-07-18', 302, 'as', 1, 2, 'hh', 'a', 1),
+(6, '2018-07-18', 303, 'as', 2, 2, 'rs', 'Anuyrag', 1);
 
 -- --------------------------------------------------------
 
@@ -202,9 +211,12 @@ CREATE TABLE `hardware_position` (
 --
 
 INSERT INTO `hardware_position` (`hardware_position_id`, `hardware_id`, `lab_id`, `member_id`, `initial_date`, `final_date`) VALUES
-(1, 307, NULL, 0, '2018-07-17', '0000-00-00'),
-(2, 322, NULL, 0, '2018-07-17', '0000-00-00'),
-(3, 302, NULL, 0, '2018-07-17', '2018-07-17');
+(1, 307, NULL, 0, '2018-07-17', '2001-12-02'),
+(2, 322, NULL, 0, '2018-07-17', '2018-07-18'),
+(3, 302, NULL, 0, '2018-07-17', '2018-07-18'),
+(4, 302, NULL, 0, '2018-07-18', '1999-02-05'),
+(5, 303, NULL, 0, '2018-07-18', '2018-07-18'),
+(6, 331, NULL, 0, '2018-07-18', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -220,6 +232,13 @@ CREATE TABLE `issue_request` (
   `date_of_request` date DEFAULT NULL,
   `name_of_hardware` int(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `issue_request`
+--
+
+INSERT INTO `issue_request` (`issue_report_id`, `department`, `id`, `purpose`, `date_of_request`, `name_of_hardware`) VALUES
+(2, 'cs', 0, 'xbc', '2018-07-18', 307);
 
 -- --------------------------------------------------------
 
@@ -269,7 +288,7 @@ CREATE TABLE `machine` (
 
 INSERT INTO `machine` (`machine_id`, `MAC_ADDR`, `processor`, `ram`, `memory`, `DOP`, `price`, `state`, `os`, `monitor`, `keyboard`, `mouse`, `grn`) VALUES
 (59, '1', 303, 302, 304, '2018-07-08', 123, 'INACTIVE', '1', 307, 306, 305, 1),
-(60, '12', 309, 308, 310, '2018-07-15', 20000, 'INACTIVE', 'Windows', 313, 312, 311, 1),
+(60, '12', 303, 303, 310, '2018-07-15', 20000, 'INACTIVE', 'Windows', 313, 312, 311, 1),
 (61, '33', 315, 314, 316, '2018-07-01', 12345, 'ACTIVE', 'windows', 319, 318, 317, 33),
 (62, '34', 321, 320, 322, '2018-07-01', 12345, 'ACTIVE', 'windows', 325, 324, 323, 33),
 (63, '35', 327, 326, 328, '2018-07-01', 12345, 'ACTIVE', 'windows', 331, 330, 329, 33);
@@ -479,13 +498,6 @@ CREATE TABLE `temp` (
   `monitor` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `temp`
---
-
-INSERT INTO `temp` (`temp_id`, `machine_id`, `processor`, `ram`, `mouse`, `harddisk`, `keyboard`, `monitor`) VALUES
-(2, 60, 303, 303, NULL, NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -510,7 +522,7 @@ CREATE TABLE `transfer_request` (
 --
 
 INSERT INTO `transfer_request` (`transfer_request_id`, `date_of_request`, `name`, `department`, `purpose`, `processor`, `ram`, `hdd`, `os`, `quantity`) VALUES
-(1, '2018-07-16', 'dfd', 'dfsdfs', 'sdfdsf', '1', '2', '1', '', 1);
+(1, '2018-07-18', 'fcvbfd', 'dfgds', 'fdsv', 'NULL', 'NULL', 'NULL', 'NULL', 1);
 
 -- --------------------------------------------------------
 
@@ -529,6 +541,13 @@ CREATE TABLE `upgrade_history` (
   `memoryf` int(11) DEFAULT NULL,
   `dateofupgrade` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `upgrade_history`
+--
+
+INSERT INTO `upgrade_history` (`upgrade_history_id`, `machine_id`, `processori`, `rami`, `memoryi`, `processorf`, `ramf`, `memoryf`, `dateofupgrade`) VALUES
+(1, 60, 309, 308, 310, 303, 303, 310, '2018-07-18');
 
 --
 -- Indexes for dumped tables
@@ -570,7 +589,8 @@ ALTER TABLE `hardware`
 --
 ALTER TABLE `hardware_complaint_book`
   ADD PRIMARY KEY (`hardware_complaint_book_id`),
-  ADD KEY `fk_hardwarecomplaint_hardwareid` (`hardware_id`);
+  ADD KEY `fk_hardwarecomplaint_hardwareid` (`hardware_id`),
+  ADD KEY `fk_hardware_workfor` (`work_for`);
 
 --
 -- Indexes for table `hardware_position`
@@ -708,13 +728,13 @@ ALTER TABLE `company`
 -- AUTO_INCREMENT for table `complaint_book`
 --
 ALTER TABLE `complaint_book`
-  MODIFY `complaint_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `complaint_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `device_repair_history`
 --
 ALTER TABLE `device_repair_history`
-  MODIFY `repair_history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `repair_history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `hardware`
@@ -726,19 +746,19 @@ ALTER TABLE `hardware`
 -- AUTO_INCREMENT for table `hardware_complaint_book`
 --
 ALTER TABLE `hardware_complaint_book`
-  MODIFY `hardware_complaint_book_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'AUTO_INCREMENT', AUTO_INCREMENT=2;
+  MODIFY `hardware_complaint_book_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'AUTO_INCREMENT', AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `hardware_position`
 --
 ALTER TABLE `hardware_position`
-  MODIFY `hardware_position_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `hardware_position_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `issue_request`
 --
 ALTER TABLE `issue_request`
-  MODIFY `issue_report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `issue_report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `lab`
@@ -804,7 +824,7 @@ ALTER TABLE `system_transfer_report`
 -- AUTO_INCREMENT for table `temp`
 --
 ALTER TABLE `temp`
-  MODIFY `temp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `temp_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `transfer_request`
@@ -816,7 +836,7 @@ ALTER TABLE `transfer_request`
 -- AUTO_INCREMENT for table `upgrade_history`
 --
 ALTER TABLE `upgrade_history`
-  MODIFY `upgrade_history_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `upgrade_history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -848,6 +868,7 @@ ALTER TABLE `hardware`
 -- Constraints for table `hardware_complaint_book`
 --
 ALTER TABLE `hardware_complaint_book`
+  ADD CONSTRAINT `fk_hardware_workfor` FOREIGN KEY (`work_for`) REFERENCES `member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_hardwarecomplaint_hardwareid` FOREIGN KEY (`hardware_id`) REFERENCES `hardware` (`hardware_id`);
 
 --
