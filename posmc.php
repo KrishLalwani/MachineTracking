@@ -32,7 +32,7 @@
                 $mid=$row['machine_id'];
                 if($row['COUNT(*)'] === '0')
                 {
-                    $_SESSION['error'] .= "Unable to delete machine, ".$i." Machine does not exist";
+                    $_SESSION['error'] .= "Unable to place machine, ".$i." Machine does not exist";
                     continue;
                 }
                 $stmt = $pdo->prepare('SELECT COUNT(*) FROM lab WHERE name = :lab');
@@ -68,7 +68,7 @@
                 }
                 else
                 {
-                    $_SESSION['error']="Machine already exists there";
+                    $_SESSION['error']="Machine ".$i." is already placed";
                 }
             }
         }
@@ -143,9 +143,9 @@
     <span class="input-group-addon">FROM </span>
     <input type="date" name="from" required="" class="form-control"> </div><br/>
     
-    <div class="input-group">
-    <span class="input-group-addon">TO (optional)</span>
-    <input type="date" name="to" class="form-control"> </div><br/>
+    <!--<div class="input-group" hidden>
+    <span class="input-group-addon">TO (optional)</span>-->
+    <input type="date" name="to"  hidden=""> <!--/div><br/-->
 
 
     <input type="submit" value="Position Machine" class="btn btn-info">

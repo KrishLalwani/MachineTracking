@@ -27,18 +27,32 @@
             $flag=0;
             for($i=$_POST['mac_addr'];$i<=$_POST['mac_addr2'];$i++)
             {
-                $stmt = $pdo->prepare('SELECT COUNT(*) FROM machine WHERE MAC_ADDR = :mac_addr');
+                $stmt = $pdo->prepare('SELECT *,COUNT(*) FROM machine WHERE MAC_ADDR = :mac_addr');
                 $stmt->execute(array(':mac_addr' => $i));
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 if($row['COUNT(*)'] !== '0')
                 {
+                    $stmtd = $pdo->prepare('DELETE FROM hardware WHERE hardware_id = :hid');
+                    $stmtd->execute(array(':hid' => $row['processor']));
+                    $stmtd = $pdo->prepare('DELETE FROM hardware WHERE hardware_id = :hid');
+                    $stmtd->execute(array(':hid' => $row['ram']));
+                    $stmtd = $pdo->prepare('DELETE FROM hardware WHERE hardware_id = :hid');
+                    $stmtd->execute(array(':hid' => $row['memory']));
+                    $stmtd = $pdo->prepare('DELETE FROM hardware WHERE hardware_id = :hid');
+                    $stmtd->execute(array(':hid' => $row['monitor']));
+                    $stmtd = $pdo->prepare('DELETE FROM hardware WHERE hardware_id = :hid');
+                    $stmtd->execute(array(':hid' => $row['keyboard']));
+                    $stmtd = $pdo->prepare('DELETE FROM hardware WHERE hardware_id = :hid');
+                    $stmtd->execute(array(':hid' => $row['mouse']));
+
+
                      $stmt = $pdo->prepare('DELETE FROM machine WHERE mac_addr = :mac_addr');
                         $stmt->execute(array(':mac_addr' => $i));
                     $_SESSION['success'].="Machine".$i." deleted Successfully\n";
                 }
                 else
                 {
-                    $_SESSION['error'] .= "Machine".$i." does not Exists\n";
+                    $_SESSION['error'] = "Other Machines does not Exists\n";
                     $flag++;
                 }
             }
