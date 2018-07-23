@@ -101,6 +101,8 @@
     <div class="page-header">
     <h1>POSITION MACHINE</h1>
     </div>
+    <div id="error" style="color: red; margin-left: 90px; margin-bottom: 20px;">
+    </div>
     <?php
     if ( isset($_SESSION['error']) )
     {
@@ -118,11 +120,11 @@
 
     <div class="input-group">
     <span class="input-group-addon">MAC ADDRESS (from)</span>
-    <input type="text" name="mac_addr" required="" class="form-control" placeholder="Starting Machine ID"> </div><br/>
+    <input type="text" name="mac_addr" required="" class="form-control" placeholder="Starting Machine ID" id="delmcf" onchange="Number('delmcf')"> </div><br/>
 
     <div class="input-group">
     <span class="input-group-addon">MAC ADDRESS (to)</span>
-    <input type="text" name="mac_addr2" required="" class="form-control" placeholder="Ending Machine ID"> </div><br/> 
+    <input type="text" name="mac_addr2" required="" class="form-control" placeholder="Ending Machine ID" id="delmct" onchange="Number('delmct')"> </div><br/> 
 
     <div class="input-group">
     <span class="input-group-addon">LAB NAME </span>

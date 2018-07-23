@@ -237,7 +237,7 @@
     <br/>
     <div class="input-group">
     <span class="input-group-addon">GR Number</span>
-    <input type="text" name="grn" required="" class="form-control" id="grn" onchange="Number('grn')" placeholder="Good Reciept No./Bill No."> </div><br/>
+    <input type="text" name="grn" required="" class="form-control" id="grn" placeholder="Good Reciept No./Bill No."> </div><br/>
     
     <div class="input-group">
     <span class="input-group-addon">Processor </span>

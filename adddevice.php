@@ -17,7 +17,7 @@
 
     if(isset($_POST['device-name']) )
     {
-        if ( strlen($_POST['device-name']) < 1   || strlen($_POST['description']) < 1 || strlen($_POST['price']) < 1 || strlen($_POST['grn']) < 1)
+        if ( strlen($_POST['device-name']) < 1   || strlen($_POST['description']) < 1 || strlen($_POST['price']) < 1 || strlen($_POST['grn']) < 1 || strlen($_POST['qty'])<1)
         {
             $_SESSION['error'] = "All Fields are required";
             header('Location: adddevice.php');
@@ -145,20 +145,23 @@
 
 
 
+            for($i=0;$i<$_POST['qty'];$i++)
+            {
 
 
-            $stmt = $pdo->prepare('INSERT INTO hardware (company, description, price, grn, name, state,supplier, DOP) VALUES (:company, :description, :price, :grn, :name, 0,:smn, :dop)');
-            $stmt->execute(array(
-                ':company' => $company_id,
-             ':description' => $descriptionid, 
-             ':price' => $_POST['price'], 
-             ':grn' => $_POST['grn'],
-             ':name' => $name_id,
-                ':smn' => $supplier_id,
-                ':dop' => $_POST['dop']));
-            $_SESSION['success'] = "Device Added Successfully";
-            header('Location: home.php');
-            return;
+                $stmt = $pdo->prepare('INSERT INTO hardware (company, description, price, grn, name, state,supplier, DOP) VALUES (:company, :description, :price, :grn, :name, 0,:smn, :dop)');
+                $stmt->execute(array(
+                    ':company' => $company_id,
+                 ':description' => $descriptionid, 
+                 ':price' => $_POST['price'], 
+                 ':grn' => $_POST['grn'],
+                 ':name' => $name_id,
+                    ':smn' => $supplier_id,
+                    ':dop' => $_POST['dop']));
+                $_SESSION['success'] = "Device Added Successfully";
+                header('Location: home.php');
+                return;
+            }
         }
     }
 ?>
@@ -286,7 +289,7 @@
     </div><br>
     <div class="input-group">
         <span class="input-group-addon">New Description</span>   
-        <input type="text" class="form-control" name="description2" id="other-description" onchange="Other('other-supplier')" placeholder="Specification of Device">
+        <input type="text" class="form-control" name="description2" id="other-description" onchange="Other('other-description')" placeholder="Specification of Device">
     </div><br>
     <input type="text" id="alert-server-new-description" name="alert-server-new-description" value="1" hidden>
     
@@ -299,7 +302,11 @@
 
         <div class="input-group">
         <span class="input-group-addon">GR No. </span>
-        <input type="text" name="grn" required class="form-control" id="gr" onchange="Number('gr')"placeholder="Good Reciept No./Bill No."> </div><br/>
+        <input type="text" name="grn" required class="form-control" id="gr" placeholder="Good Reciept No./Bill No."> </div><br/>
+
+        <div class="input-group">
+        <span class="input-group-addon">Quantity </span>
+        <input type="text" name="qty" required class="form-control" id="qty" onchange="Number('qty')"placeholder="Total Quantity"> </div><br/>
 
         <input type="submit" value="Add Device" class="btn btn-info">
         <a class ="link-no-format" href="home.php"><div class="btn btn-my">Cancel</div></a>

@@ -94,7 +94,7 @@
 </head>
 <body>
                    <div class="wrapper">
-                <?php if (isset($_SESSION['id'])&&$_SESSION['role']=='0') include "navbar.php"; else if(isset($_SESSION['id'])&&$_SESSION['role']=='1')  include "navbar_faculty.php"; else include "navbar_tech"?>
+                <?php if (isset($_SESSION['id'])&&$_SESSION['role']=='0') include "navbar.php"; else if(isset($_SESSION['id'])&&$_SESSION['role']=='1')  include "navbar_faculty.php"; else include "navbar_tech.php"?>
 
     <div class="container" id="content">
     <div class="page-header">
@@ -126,7 +126,7 @@
 
     <div class="input-group">
     <span class="input-group-addon">Priority</span>
-    <input type="text" name="priority" required="" placeholder="in no. of days" class="form-control" id="priority" onchange="Number('priority')"> </div><br/>
+    <input type="number" name="priority" required="" placeholder="in no. of days" class="form-control" id="priority"> </div><br/>
     
     <div class="input-group">
     <span class="input-group-addon">Complaint By </span>

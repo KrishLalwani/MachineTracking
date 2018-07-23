@@ -132,7 +132,7 @@
     <span class="input-group-addon">Work For</span>
     <select name=work_for class="form-control" required="">
         <?php
-            $qr=$pdo->query("SELECT * from member WHERE member_id <> 0");
+            $qr=$pdo->query("SELECT * from member WHERE role = 2");
             while($row=$qr->fetch(PDO::FETCH_ASSOC))
             {
                 echo '<option value = '.$row['member_id'].'>';
