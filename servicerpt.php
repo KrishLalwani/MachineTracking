@@ -5,7 +5,7 @@
     {
         die('ACCESS DENIED');
     }
-    if( $_SESSION['id'] != '0' )
+    if( $_SESSION['role'] != '0' )
     {
         die('ACCESS DENIED');
     }
@@ -148,7 +148,9 @@
 </head>
 <body>
                    <div class="wrapper">
-                <?php include "navbar.php" ;?>
+                <?php if (isset($_SESSION['id'])&&$_SESSION['role']=='0') include "navbar.php"; 
+                else if(isset($_SESSION['id'])&&$_SESSION['role']=='1')  include "navbar_faculty.php";
+                else include "navbar_tech.php";?>
 
     <div class="container" id="content">
     <div class="page-header">
@@ -162,7 +164,7 @@
     }
     ?>
 
-    <form method="POST" action=<?= "servicerpt.php?id=".$_GET['id']?> >
+    <form method="POST" action=<?= "servicerpt.php?id=".$_GET['id']?>" class="col-xs-5">
 
     <div class="input-group">
     <span class="input-group-addon">Department </span>
@@ -174,7 +176,7 @@
     
     <div class="input-group">
     <span class="input-group-addon">Lab no.</span>
-    <select name="labid" required>
+    <select name="labid" class="form-control" required>
         <?php
             $read=$pdo->query('select name,lab_id from lab order by name');
             while($row = $read->fetch(PDO::FETCH_ASSOC))
@@ -188,9 +190,12 @@
         ?>
     </select>   
     </div><br>
-        <div>Choose number of PC</div><input type="Number" name="totalqty" id="totalqty" value = "<?php echo $qty; ?>" min=1 required>
-           <a class="link-black" href="#" onclick="addtags()">Add Machines</a>
+        <div class="input-group">
+        <span class="input-group-addon">Choose number of PC</span><input type="Number" class="form-control" name="totalqty" id="totalqty" value = "<?php echo $qty; ?>" min=1 onchange="addtags();" required>
             <br>
+           <!--a class="link-black" href="#" onclick="addtags()">Add Machines</a-->
+        </div>
+        <br>
         <div id="add-machine" class="input-group"></div>
         <script type="text/javascript">
                     var total=document.getElementById("totalqty").value;
@@ -201,7 +206,7 @@
         }   
         for (i=1;i<=total;i++)
         {
-            addimg.appendChild(document.createTextNode("mac" + i));
+            addimg.appendChild(document.createTextNode("mac " + i + " "));
             var ipt = document.createElement("input");
             ipt.type = "text";
             ipt.name = "machine"+ i;

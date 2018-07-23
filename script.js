@@ -18,6 +18,20 @@ function fetch_select(val)
     },
     success: function (response) {
      document.getElementById("drop-description").innerHTML=response;
+     document.getElementById("drop-description").innerHTML+="<option selected>Other</option>"
+    }
+    });
+}
+function fetch_select2(val)
+{
+    $.ajax({
+    type: 'post',
+    url: 'fetch_device.php',
+    data: {
+     get_option:val
+    },
+    success: function (response) {
+     document.getElementById("spec").innerHTML=response;
     }
     });
 }

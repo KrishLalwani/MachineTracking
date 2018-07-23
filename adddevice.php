@@ -5,7 +5,7 @@
     {
         die('ACCESS DENIED');
     }
-    if( $_SESSION['id'] != '0' )
+    if( $_SESSION['role'] != '0' )
     {
         die('ACCESS DENIED');
     }
@@ -25,6 +25,7 @@
         }
         else
         {
+            $_POST['dop']=date('y-m-d',strtotime($_POST['dop']));  
             if($_POST['alert-server-new-device']=='1')
             {                    
                 $read=$pdo->prepare('SELECT * from name where name = :name');
@@ -146,14 +147,15 @@
 
 
 
-            $stmt = $pdo->prepare('INSERT INTO hardware (company, description, price, grn, name, state,supplier) VALUES (:company, :description, :price, :grn, :name, 0,:smn)');
+            $stmt = $pdo->prepare('INSERT INTO hardware (company, description, price, grn, name, state,supplier, DOP) VALUES (:company, :description, :price, :grn, :name, 0,:smn, :dop)');
             $stmt->execute(array(
                 ':company' => $company_id,
              ':description' => $descriptionid, 
              ':price' => $_POST['price'], 
              ':grn' => $_POST['grn'],
              ':name' => $name_id,
-                ':smn' => $supplier_id));
+                ':smn' => $supplier_id,
+                ':dop' => $_POST['dop']));
             $_SESSION['success'] = "Device Added Successfully";
             header('Location: home.php');
             return;
@@ -178,7 +180,9 @@
 </head>
 <body>
     <div class="wrapper">
-    <?php include "navbar.php" ;?>
+    <?php if (isset($_SESSION['id'])&&$_SESSION['role']=='0') include "navbar.php"; 
+                else if(isset($_SESSION['id'])&&$_SESSION['role']=='1')  include "navbar_faculty.php";
+                else include "navbar_tech.php";?>
       <div class="container-fluid row" id="content">
         <div class="page-header">
         <h1>ADD DEVICE</h1>
@@ -289,6 +293,9 @@
         <div class="input-group">
         <span class="input-group-addon">Price of Purchase  &#8377</span>
         <input type="text" name="price" required class="form-control" id="pr" onchange="Number('pr')" placeholder="0000000"> </div><br/>
+
+        <input type="text"  name="dop" hidden="" id="date" value = '<?= date('y-m-d') ?>'> 
+
 
         <div class="input-group">
         <span class="input-group-addon">GR No. </span>

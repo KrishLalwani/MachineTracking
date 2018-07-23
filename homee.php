@@ -17,10 +17,7 @@
 </head>
 <body>
         <div class="wrapper">
-         <div class="wrapper">
-                <?php if (isset($_SESSION['id'])&&$_SESSION['role']=='0') include "navbar.php"; 
-                else if(isset($_SESSION['id'])&&$_SESSION['role']=='1')  include "navbar_faculty.php";
-                else include "navbar_tech.php";?>
+         <?php if ($_SESSION['id']=='0') include "navbar.php"; else include "navbar_index.php" ;?>
            <div class="container-fluid row" id="content">
 
         <div class="page-header">
@@ -39,7 +36,7 @@
                 unset($_SESSION['error']);
             }
 
-            if($_SESSION['role']=='0')
+            if($_SESSION['id']=='0')
             {
                 $stmtcnt = $pdo->query("SELECT COUNT(*) FROM complaint_book JOIN repair_history ON complaint_book.machine_id = repair_history.machine_id WHERE complaint_book.remarks IS NOT NULL AND repair_history.fault IS NULL");
                 $row = $stmtcnt->fetch(PDO::FETCH_ASSOC);
@@ -485,7 +482,102 @@
                     echo('</table>');
                 }
             }
-            else if($_SESSION['role']=='2')
+
+            else if($_SESSION['id']=='1')
+            {
+
+
+                $stmt=$pdo->query("SELECT COUNT(*) FROM hardware_position WHERE final_date='0000-00-00' OR  final_date='1990-00-00'");
+                $row=$stmt->fetch(PDO::FETCH_ASSOC);
+                if($row['COUNT(*)']>0)
+                {
+                    echo "<h2>Issued Devices</h2>";
+                    echo ("<table class=\"table table-striped\">
+                        <tr> <th>S.no.</th><th>Member ID</th><th>Name</th><th>Hardware Issued</th>
+                        <th>Hardware Desc.</th><th>Date</th><th>Hardware Company</th></tr>");
+                    $stmt=$pdo->query("SELECT * FROM hardware_position");
+                    $i=1;
+                    while($row2=$stmt->fetch(PDO::FETCH_ASSOC))
+                    {
+                        echo "<tr>";
+                            echo "<td>".$i++."</td>";
+                            echo "<td>";
+                                $stmtname=$pdo->prepare("SELECT * FROM hardware_position where final_date = '0000-00-00' OR final_date = '1990-00-00'");
+                                $stmtname->execute(array());
+                                $name=$stmtname->fetch(PDO::FETCH_ASSOC);
+
+                                $stmtname=$pdo->prepare("SELECT id FROM member where member_id=:mid");
+                                $stmtname->execute(array(':mid'=>$name['member_id']));
+                                $name=$stmtname->fetch(PDO::FETCH_ASSOC);
+
+
+                                //echo $name['member_id'];
+                            echo "</td>";
+                            echo "<td>";
+                                $stmtname1=$pdo->prepare("SELECT first_name,last_name FROM member where member_id=:mid");
+                                $stmtname1->execute(array(':mid'=>$name['member_id']));
+                                $name1=$stmtname1->fetch(PDO::FETCH_ASSOC);
+                                echo $name1['first_name'].' '.$name1['last_name'];
+                            echo "</td>";
+
+                            echo "<td>";
+                                $stmtname2=$pdo->prepare("SELECT name,description,company FROM hardware where hardware_id=:hid");
+                                $stmtname2->execute(array(':hid'=>$name['hardware_id']));
+                                $name2=$stmtname2->fetch(PDO::FETCH_ASSOC);
+                                echo $name2['name'];
+                            echo "</td>";
+
+                            echo "<td>";
+
+                                $stmtname3=$pdo->prepare("SELECT spec FROM specification where name_id=:nid");
+                                $stmtname3->execute(array(':nid'=>$name2['description']));
+                                $name3=$stmtname3->fetch(PDO::FETCH_ASSOC);
+
+                                echo $name3['spec'];
+
+                            echo "</td>";
+
+                            echo "<td>";
+
+                                echo $name['initial_date'];
+
+                            echo "</td>";
+
+                            $stmtname4=$pdo->prepare("SELECT name FROM company where company_id=:cid");
+                                $stmtname4->execute(array(':cid'=>$name2['company']));
+                                $name4=$stmtname4->fetch(PDO::FETCH_ASSOC);
+                                echo $name4['name'];
+
+                            echo "<td>";
+
+
+                                echo "<a class='link-black' href='issue_hardware.php?id=".$row2['issue_report_id']."'>Issue</a>/
+                                <a class='link-red' href='delete_issue_request.php?id=".$row2['issue_report_id']."'>Delete</a>";
+                            echo "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+            else 
             {
                 $stmtcnt = $pdo->query("SELECT COUNT(*) FROM complaint_book WHERE remarks IS NULL AND work_for = ".$_SESSION['id']."");
                 $row = $stmtcnt->fetch(PDO::FETCH_ASSOC);
@@ -596,86 +688,6 @@
                         $i++;
                     }
                     echo('</table>');
-                }
-            }
-            else if($_SESSION['role']=='1')
-            {
-                $stmt=$pdo->query("SELECT COUNT(*) FROM hardware_position WHERE final_date='0000-00-00' OR  final_date='1970-01-01'");
-                $row=$stmt->fetch(PDO::FETCH_ASSOC);
-                if($row['COUNT(*)']>0)
-                {
-                    echo "<h2>Issued Devices</h2>";
-                    echo ("<table class=\"table table-striped\">
-                        <tr> <th>S.no.</th><th>Member ID</th><th>Name</th><th>Hardware Issued</th>
-                        <th>Hardware Desc.</th><th>Date</th><th>Hardware Company</th></tr>");
-                    $stmt=$pdo->query("SELECT * FROM hardware_position WHERE final_date='0000-00-00' OR  final_date='1970-01-01'");
-                    $i=1;
-                    while($row2=$stmt->fetch(PDO::FETCH_ASSOC))
-                    {
-                        echo "<tr>";
-                            echo "<td>".$i++."</td>";
-                            echo "<td>";
-                                //$stmtname7=$pdo->prepare("SELECT * FROM hardware_position where final_date = '0000-00-00' OR final_date = '1990-00-00'");
-                               // $stmtname7->execute(array());
-                               // $name7=$stmtname7->fetch(PDO::FETCH_ASSOC);
-
-                                $stmtname=$pdo->prepare("SELECT * FROM member where member_id=:mid");
-                                $stmtname->execute(array(':mid'=>$row2['member_id']));
-                                $name=$stmtname->fetch(PDO::FETCH_ASSOC);
-
-
-                                echo $name['id'];
-                            echo "</td>";
-                            echo "<td>";
-                                //$stmtname1=$pdo->prepare("SELECT first_name,last_name FROM member where member_id=:mid");
-                                //$stmtname1->execute(array(':mid'=>$name['id']));
-                                //$name1=$stmtname1->fetch(PDO::FETCH_ASSOC);
-
-                                echo $name['first_name'].' '.$name['last_name'];
-                            echo "</td>";
-
-                            echo "<td>";
-                                $stmtname2=$pdo->prepare("SELECT name,description,company FROM hardware where hardware_id=:hid");
-                                $stmtname2->execute(array(':hid'=>$row2['hardware_id']));
-                                $name2=$stmtname2->fetch(PDO::FETCH_ASSOC);
-                                //echo $name2['name'];
-
-                                $stmtname0=$pdo->prepare("SELECT name FROM name where name_id=:nnid");
-                                $stmtname0->execute(array(':nnid'=>$name2['name']));
-                                $name0=$stmtname0->fetch(PDO::FETCH_ASSOC);
-                                echo $name0['name'];
-
-                            echo "</td>";
-
-                            echo "<td>";
-
-                                $stmtname3=$pdo->prepare("SELECT spec FROM specification where spec_id=:nid");
-                                $stmtname3->execute(array(':nid'=>$name2['description']));
-                                $name3=$stmtname3->fetch(PDO::FETCH_ASSOC);
-
-                                echo $name3['spec'];
-
-                            echo "</td>";
-
-                            echo "<td>";
-
-                                echo $row2['initial_date'];
-
-                            echo "</td>";
-
-                            
-                            
-                           echo "<td>";
-
-                           $stmtname4=$pdo->prepare("SELECT name FROM company where company_id=:cid");
-                                $stmtname4->execute(array(':cid'=>$name2['company']));
-                                $name4=$stmtname4->fetch(PDO::FETCH_ASSOC);
-                                echo $name4['name'];
-
-                            echo "</td>";
-                        echo "</tr>";
-                    }
-                    echo "</table>";
                 }
             }
         ?>
