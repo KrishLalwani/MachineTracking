@@ -170,11 +170,11 @@
 
     <div class="input-group">
     <span class="input-group-addon">Department </span>
-    <input type="text" name="department" class="form-control" required value="<?= $dept ?>"> </div><br/>
+    <input type="text" name="department" class="form-control" required value="<?= $dept ?>" disabled class="form-control"> </div><br/>
 
     <div class="input-group">
     <span class="input-group-addon">Purpose</span>
-    <input type="text" name="purpose" class="form-control" required value ="<?= $pur ?>"> </div><br/>
+    <input type="text" name="purpose" class="form-control" required value ="<?= $pur ?>" disabled class="form-control"> </div><br/>
     
     <div class="input-group">
     <span class="input-group-addon">Lab no.</span>
@@ -231,7 +231,7 @@
         </script>
 
     <input type="submit" value="Register Transfer Request" class="btn btn-info">
-    <input type="submit" name="cancel" value="Cancel" class="btn btn-info">
+    <a class ="link-no-format" href="home.php"><div class="btn btn-my">Cancel</div></a>
     </form>
 
     </div>

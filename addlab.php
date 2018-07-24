@@ -71,6 +71,8 @@
         <div class="page-header">
         <h1>ADD LAB</h1>
         </div>
+        <div id="error" style="color: red; margin-left: 90px; margin-bottom: 20px;">
+        </div>
         <?php
         if ( isset($_SESSION['error']) )
         {
@@ -88,11 +90,11 @@
 
         <div class="input-group">
         <span class="input-group-addon">Lab Name </span>
-        <input type="text" name="lab_name" required class="form-control" placeholder="Lab Name/Number"> </div><br/>
+        <input type="text" name="lab_name" required class="form-control" placeholder="Lab Name/Number" id="lb" onchange="labs('lb')"> </div><br/>
 
         <div class="input-group">
         <span class="input-group-addon">Department </span>
-        <input type="text" name="department" required class="form-control" placeholder="Department Name"> </div><br/>
+        <input type="text" name="department" required class="form-control" placeholder="Department Name" id="depname" onchange="Names('depname')"> </div><br/>
 
         <input type="submit" value="Add Lab" class="btn btn-info">
         <a class ="link-no-format" href="home.php"><div class="btn btn-my">Cancel</div></a>

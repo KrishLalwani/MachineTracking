@@ -55,7 +55,7 @@
 		</div>
 	<br><br><br>
 		<div class="container">
-			<span class="col-xs-6">
+			<span class="col-xs-12">
 				<b>Department: &nbsp</b>
 				<?php
 						$sdep = $pdo->prepare("SELECT department FROM system_transfer_report WHERE system_transfer_report_id=:srid");
@@ -64,7 +64,10 @@
 						echo ($sdepn['department']);	
 					?>
 			</span>
-			<span>
+		</div>
+	<br>
+		<div class="container">
+			<span class="col-xs-12">
 				<b>Room/Lab No.: &nbsp</b>
 					<?php
 						$slab = $pdo->prepare("SELECT name FROM lab JOIN system_transfer_report ON(system_transfer_report.lab_id=lab.lab_id) WHERE system_transfer_report_id=:srid");

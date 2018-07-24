@@ -28,7 +28,7 @@
          <div class="container-fluid row" id="content">
 
     <div class="page-header">
-    <h1>MACHINES</h1>
+    <h1>Devices</h1>
     <?php
         if ( isset($_SESSION['success']))
         {
@@ -136,13 +136,107 @@
                     if($_POST['state']==0)
                     {
                         echo('<a class="link-black" href="deletedev.php?dev_id='.$row['hardware_id'].'">'. 'Delete Device ' . '</a>');
+
+                        $flag=0;
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where processor = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where ram = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where memory = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where monitor = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where keyboard = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where mouse = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+
+                        if($flag==0)
+                        echo('<a class="link-black" href="posdev.php?dev_id='.$row['hardware_id'].'">'. ' / Position Device ' . '</a>');
                     }
                     else if($_POST['state']==2)
                     {
                         echo('<a class="link-black" href="returndev.php?dev_id='.$row['hardware_id'].'">'. 'Return Device ' . '</a>');
                     }
                     else if($_POST['state']==1)
-                        echo "No Action";
+                    {
+                        $flag=0;
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where processor = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where ram = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where memory = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where monitor = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where keyboard = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+                        $stmtcheck = $pdo->prepare("SELECT * FROM machine where mouse = :hid");
+                        $stmtcheck->execute(array(':hid' => $row['hardware_id']));
+                        $rowcheck = $stmtcheck->fetch(PDO::FETCH_ASSOC);
+                        if($rowcheck != FALSE)
+                        {
+                            $flag++;
+                        }
+
+                        if($flag==0)
+                        echo('<a class="link-black" href="unposdev.php?dev_id='.$row['hardware_id'].'">'. ' Unposition Device ' . '</a>');
+                    }
                     echo("</td>");    
                     $i++;
                 }

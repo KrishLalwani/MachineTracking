@@ -100,11 +100,11 @@
     
     <div class="input-group">
     <span class="input-group-addon">Department </span>
-    <input type="text" name="department" required="" class="form-control" placeholder="Department Name"> </div><br/>
+    <input type="text" name="department" required="" class="form-control" placeholder="Department Name" id="deprt" onchange="Names('deprt')"> </div><br/>
 
     <div class="input-group">
     <span class="input-group-addon">Purpose</span>
-    <input type="text" name="purpose" required="" class="form-control"> </div><br/>
+    <input type="text" name="purpose" required="" class="form-control" id="purp" onchange="Purpose('purp')"> </div><br/>
 
     <p>Required Specifications</p>
     <div class="input-group">

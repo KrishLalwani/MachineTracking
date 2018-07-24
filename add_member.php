@@ -113,8 +113,8 @@
     </p>
 
     <div class="input-group">
-    <span class="input-group-addon">ID</span>
-    <input type="text" name="id" required="" class="form-control" placeholder="Enter Collge ID"> </div><br/>
+    <span class="input-group-addon">ID</span> 
+    <input type="text" name="id" required="" class="form-control" placeholder="Enter Collge ID" id="Mid" onchange="labs('Mid')"> </div><br/>
 
     <div class="input-group">
     <span class="input-group-addon">First Name</span>

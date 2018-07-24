@@ -65,7 +65,11 @@
                 $wf=$_POST['work_for'];
                 $date=$_POST['date'];
                 $_SESSION['success'] = "Machine sent to Repair Successfully";
-                header("Location:printcomp.php?mc_id=$mid&wf=$wf&date=$date");
+               // header("Location:printcomp.php?mc_id=$mid&wf=$wf&date=$date");
+                echo("<script>
+         window.open('printcomp.php?mc_id=$mid&wf=$wf&date=$date', '_blank'); 
+</script>");
+        echo("<script>window.open('home.php','_self')</script>");
             }
             else
             {

@@ -54,10 +54,10 @@
                     $stmt->execute(array(':mid' => $hid));
 
                 $stmt = $pdo->prepare('UPDATE hardware_position SET final_date = :fdate WHERE hardware_id = :mid AND final_date = "000-00-00"');
-                    $stmt->execute(array(':mid' => $hid, ':fdate' => $_POST['date']));
+                    $stmt->execute(array(':mid' => $hid, ':fdate' => date('y-m-d')));
 
                 $stmt = $pdo->prepare('INSERT INTO device_repair_history (hardware_id, initial_date, final_date) VALUES (:hid, :idate, "0000-00-00")');
-                    $stmt->execute(array(':hid' => $hid, ':idate' => $_POST['date']));
+                    $stmt->execute(array(':hid' => $hid, ':idate' => date('y-m-d')));
 
                 $stmt = $pdo->prepare('UPDATE hardware_complaint_book SET work_for = :wf WHERE hardware_id = :hid AND work_for IS NULL');
                 $stmt->execute(array(':hid' => $hid, ':wf' => $_POST['work_for']));
@@ -101,7 +101,7 @@
        <div class="container-fluid row" id="content">
 
     <div class="page-header">
-    <h1>REPAIR MACHINE</h1>
+    <h1>REPAIR HARDWARE</h1>
     </div>
     <?php
     if ( isset($_SESSION['error']) )
@@ -123,10 +123,10 @@
     <input type="text" disabled required="" value="<?= $hid ?>" class="form-control">
     </div><br/>
     <input type="text" name="hardware_id" hidden="" required="" value="<?= $hid ?>">
-    <div class="input-group">
+    <!--<div class="input-group">
     <span class="input-group-addon">DATE</span>
     <input type="date" name="date" required="" class="form-control" required> </div><br/>
-
+    -->
 
     <div class="input-group">
     <span class="input-group-addon">Work For</span>

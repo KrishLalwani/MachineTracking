@@ -89,6 +89,8 @@
     <div class="page-header">
     <h1>DELETE MACHINE in range</h1>
     </div>
+    <div id="error" style="color: red; margin-left: 90px; margin-bottom: 20px;">
+        </div>
     <?php
     if ( isset($_SESSION['error']) )
     {
@@ -106,11 +108,11 @@
 
     <div class="input-group">
     <span class="input-group-addon">MAC ADDRESS (from)</span>
-    <input type="text" name="mac_addr" class="form-control" required="" placeholder="Starting machine id"> </div><br/>
+    <input type="text" name="mac_addr" class="form-control" required="" placeholder="Starting machine id" id="mcs" onchange="Number('mcs')"> </div><br/>
 
     <div class="input-group">
     <span class="input-group-addon">MAC ADDRESS (to)</span>
-    <input type="text" name="mac_addr2" class="form-control" placeholder="Ending machine id"> </div><br/>
+    <input type="text" name="mac_addr2" class="form-control" placeholder="Ending machine id" id="mce" onchange="Number('mce')"> </div><br/>
 
 
     <input type="submit" value="Delete Machine" class="btn btn-info">

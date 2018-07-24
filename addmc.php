@@ -362,7 +362,7 @@
 
     <div class="input-group">
         <span class="input-group-addon">Company Name</span>
-        <select id="drop-other" name="company" class="form-control" onchange="Company();" required="">
+        <select id="drop-other-company" name="company" class="form-control" onchange="Company();" required="">
         <?php
             
             $qr=$pdo->query("SELECT DISTINCT name from company");
@@ -378,9 +378,9 @@
     </div><br>
     <div class="input-group">
         <span class="input-group-addon">New Company Name</span>   
-        <input type="text" class="form-control" name="company2" id="hide-drop-other" onchange="Other('hide-drop-other')" placeholder="Company Name">
+        <input type="text" class="form-control" name="company2" id="hide-drop-other-company" onchange="Other('hide-drop-other')" placeholder="Company Name">
     </div><br>
-    <input type="text" id="alert-server-new"name="alert-server-new" value="1" hidden>
+    <input type="text" id="alert-server-new-company"name="alert-server-new" value="1" hidden>
 
 
     <div class="input-group">

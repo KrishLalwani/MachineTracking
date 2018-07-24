@@ -278,7 +278,7 @@
                 }
                 if($flag==0)
                 {
-                    echo "<h2>Transfer Requests</h2>";
+                    echo "<h2>Computer Transfer Requests</h2>";
                     $i=1;
                     $stmtread = $pdo->query("SELECT * FROM transfer_request");
                     echo ("<table class=\"table table-striped\">
@@ -343,12 +343,12 @@
                     }
                     echo('</table>');
                 }
-
+                //ISSUE BEGINS
                 $stmt=$pdo->query("SELECT COUNT(*) FROM issue_request");
                 $row=$stmt->fetch(PDO::FETCH_ASSOC);
                 if($row['COUNT(*)']>0)
                 {
-                    echo "<h2>Issue Requests</h2>";
+                    echo "<h2>Issue Hardware Requests</h2>";
                     echo ("<table class=\"table table-striped\">
                         <tr> <th>S.no.</th><th>Name</th><th>Requested Hardware</th><th>Purpose</th><th>Date Of Request</th><th>Action</th></tr>");
                     $stmt=$pdo->query("SELECT * FROM issue_request");
@@ -358,16 +358,22 @@
                         echo "<tr>";
                             echo "<td>".$i++."</td>";
                             echo "<td>";
-                                $stmtname=$pdo->prepare("SELECT first_name,last_name FROM member where id = :id");
-                                $stmtname->execute(array(":id"=>$_SESSION['id']));
+                                $stmtname=$pdo->prepare("SELECT first_name,last_name FROM member where member_id = :id");
+                                $stmtname->execute(array(":id"=>$row2['id']));
                                 $name=$stmtname->fetch(PDO::FETCH_ASSOC);
                                 echo $name['first_name'].' '.$name['last_name'];
                             echo "</td>";
                             echo "<td>";
+                            /*
                                 $stmtname=$pdo->prepare("SELECT description from hardware where hardware_id = :name");
                                 $stmtname->execute(array(":name"=>$row2['name_of_hardware']));
                                 $name=$stmtname->fetch(PDO::FETCH_ASSOC);
                                 echo $name['description'];
+                            */
+                            $stmtname=$pdo->prepare("SELECT name from name WHERE name_id = :name");
+                            $stmtname->execute(array(":name"=>$row2['name_of_hardware']));
+                            $rowname=$stmtname->fetch(PDO::FETCH_ASSOC);
+                            echo $rowname['name'];
                             echo "</td>";
                             echo "<td>";
                                 echo $row2['purpose'];
@@ -376,7 +382,7 @@
                                 echo $row2['date_of_request'];
                             echo "</td>";
                             echo "<td>";
-                                echo "<a class='link-black' href='issue_hardware.php?id=".$row2['issue_report_id']."'>Issue</a>/
+                                echo "<a class='link-black' href='issue_hardware.php?id=".$row2['issue_report_id']."&name_id=".$row2['name_of_hardware']."'>Issue</a>/
                                 <a class='link-red' href='delete_issue_request.php?id=".$row2['issue_report_id']."'>Delete</a>";
                             echo "</td>";
                         echo "</tr>";

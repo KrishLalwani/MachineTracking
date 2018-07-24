@@ -194,6 +194,10 @@
 
                 $_SESSION['success'] = "Machine returned from Repair Successfully";
                 header("Location: printcomprem.php?mc_id=$mid&date=$date");
+                echo("<script>
+         window.open('printcomprem.php?mc_id=$mid&date=$date', '_blank'); 
+</script>");
+        echo("<script>window.open('home.php','_self')</script>");
                 return;
             }
             else
@@ -265,8 +269,8 @@
     </div><br/>
     <input type="text" name="date" hidden >
     <div class="input-group">
-    <span class="input-group-addon">Fault </span>
-    <input type="text" name="fault" required="" class="form-control"> </div><br/>
+    <span class="input-group-addon">FAULT </span>
+    <input type="text" name="fault" required="" class="form-control" id="fault"> </div><br/>
 
     <div class="input-group">
     <span class="input-group-addon">COST OF REPAIR </span>

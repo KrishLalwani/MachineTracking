@@ -30,7 +30,7 @@
             <div class="wrapper">
      <?php if (isset($_SESSION['id'])&&$_SESSION['role']=='0') include "navbar.php"; 
                 else if(isset($_SESSION['id'])&&$_SESSION['role']=='1')  include "navbar_faculty.php";
-                else include "navbar_tech.php";?>w
+                else include "navbar_tech.php";?>
     <div class="container-fluid row" id="container">
     <div class="page-header">
     <h1>UPGRADE MACHINE</h1>
