@@ -1,4 +1,4 @@
-X-UA-Compatible<?php
+<?php
     session_start();
     require_once "pdo.php";
     if( !isset($_SESSION['id']) )
@@ -15,12 +15,12 @@ X-UA-Compatible<?php
         return;
     }
     $stmtcnt = $pdo->prepare("SELECT COUNT(*) FROM machine WHERE MAC_ADDR = :mac_addr");
-    $stmtcnt->execute(array(':mac_addr' => $_POST['mac_addr']));
+    $stmtcnt->execute(array(':mac_addr' => $_GET['mac_addr']));
         $row = $stmtcnt->fetch(PDO::FETCH_ASSOC);
 
         if($row['COUNT(*)']==='0')
         {
-            $_SESSION['error'] = "This Machine does not exist";
+            $_SESSION['error'] = "This Machine does not exist<br>";
             header('Location: viewmchistory.php');
             return;
         }
@@ -45,16 +45,15 @@ X-UA-Compatible<?php
     <h1>MACHINE HISTORY</h1>
     </div>
     <?php
-
+        if ( isset($_SESSION['error']) )
+        {
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
+            unset($_SESSION['error']);
+        }
         if ( isset($_SESSION['success']))
         {
-            echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
-                unset($_SESSION['success']);
-        }
-        if ( isset($_SESSION['error']))
-        {
-            echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
-            unset($_SESSION['error']);
+            echo('<p style="color: green;">'.$_SESSION['success']."</p>\n");
+            unset($_SESSION['success']);
         }
 
         //echo('<p><a href="logout.php">Logout</a></p>');
@@ -64,7 +63,7 @@ X-UA-Compatible<?php
         if($row['COUNT(*)']!=='0')
         {
             $stmt = $pdo->prepare('SELECT * FROM machine WHERE MAC_ADDR = :mac_addr');
-            $stmt->execute(array(':mac_addr' => $_POST['mac_addr']));
+            $stmt->execute(array(':mac_addr' => $_GET['mac_addr']));
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $mid = $row['machine_id'];
 
@@ -117,7 +116,7 @@ X-UA-Compatible<?php
                 echo($i);
                 echo("</td>");
                 echo ("<td>");
-                echo(htmlentities($_POST['mac_addr']));
+                echo(htmlentities($_GET['mac_addr']));
                 echo ("</td>");
                 echo ("<td>");
                 echo(htmlentities($row['initial_date']));
@@ -174,7 +173,7 @@ X-UA-Compatible<?php
                 echo("</td>");
                 
                 echo ("<td>");
-                echo(htmlentities($_POST['mac_addr']));
+                echo(htmlentities($_GET['mac_addr']));
                 echo ("</td>");
                 
                 echo ("<td>");
@@ -228,7 +227,7 @@ X-UA-Compatible<?php
         }
         else
         {
-            $_SESSION['error'] = "This Machine does not exist";
+            $_SESSION['error'] = "This Machine does not exist<br>";
             header('Location: viewmchis.php');
             return;
         }

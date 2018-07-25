@@ -15,22 +15,22 @@
         return;
     }
 
-    if(isset($_POST['mac_addr']) )
+    if(isset($_GET['mac_addr']) )
     {
-        if ( strlen($_POST['mac_addr']) < 1 )
+        if ( strlen($_GET['mac_addr']) < 1 )
         {
-            $_SESSION['error'] = "All Fields are required";
+            $_SESSION['error'] = "All Fields are required<br>";
             header('Location: upgrademc.php');
             return;
         }
         else
         {
             $stmtread = $pdo->prepare("SELECT * FROM machine where MAC_ADDR = :xyz");
-            $stmtread->execute(array(":xyz" => $_POST['mac_addr']));
+            $stmtread->execute(array(":xyz" => $_GET['mac_addr']));
             $row = $stmtread->fetch(PDO::FETCH_ASSOC);
             if ( $row === false )
             {
-                $_SESSION['error'] = 'Could not load machine details';
+                $_SESSION['error'] = 'Could not load machine details<br>';
                 header( 'Location: upgrademc.php' ) ;
                 return;
             }
@@ -146,7 +146,7 @@
                 ':d' => date('y-m-d')
                 ));
 
-            $_SESSION['success']="Machine Upgraded Sucessfully";
+            $_SESSION['success']="Machine Upgraded Sucessfully<br>";
             header("Location: home.php");
             return;
         }
@@ -179,15 +179,15 @@
     <h1>UPGRADE MACHINE</h1>
     </div>
     <?php
-    if ( isset($_SESSION['error']) )
-    {
-        echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
-        unset($_SESSION['error']);
-    }
-    if ( isset($_SESSION['success']))
+        if ( isset($_SESSION['error']) )
         {
-            echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
-                unset($_SESSION['success']);
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
+            unset($_SESSION['error']);
+        }
+        if ( isset($_SESSION['success']))
+        {
+            echo('<p style="color: green;">'.$_SESSION['success']."</p>\n");
+            unset($_SESSION['success']);
         }
     ?>
 
@@ -306,7 +306,7 @@
                 $pron = $pro->fetch(PDO::FETCH_ASSOC);
 
                 echo ($pron['spec']);
-                echo ($rowx['description']);
+                //echo ($rowx['description']);
                 echo '</option>';
             }
          ?>
@@ -315,8 +315,17 @@
 
     <div class="input-group">
     <span class="input-group-addon">OS </span>
-    <input type="text" name="os" value="<?= $os ?>" class="form-control" disabled> </div><br/>
-
+    <!--<input type="text" name="os" value="<?= $os ?>" class="form-control"> </div><br/>-->
+    <select name="os" class="form-control" required="">
+        <?php
+            $os=$pdo->prepare("SELECT os from machine where MAC_ADDR= :ma");
+            $os->execute(array(':ma'=>$_POST['mac_addr']));
+            $rowos=$os->fetch(PDO::FETCH_ASSOC);
+        ?>
+        <option value="windows" <?php if($rowos['os']=="windows") echo " selected "?>>Windows</option>
+        <option value="linux" <?php if($rowos['os']=="linux") echo " selected "?>>Linux</option>
+        <option value="osx" <?php if($rowos['os']=="osx") echo " selected "?>>OS X</option>
+    </select></div><br>
     <!--<div class="input-group">
     <span class="input-group-addon">Keyboard </span>
     <input type="text" name="keyboard" required="" value="<?= $keyboard ?>" class="form-control"> </div><br/>-->

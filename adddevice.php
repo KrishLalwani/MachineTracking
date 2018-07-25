@@ -56,7 +56,7 @@
             }
 
             $name_id=$row['name_id'];
-            if($_POST['alert-server-new']=='1')
+            if($_POST['alert-server-new-company']=='1')
             {
                     //This will insert in company if alert server new is 1 it is alert that will be issued if other device is selected. First entry will be made then id will be selected
 
@@ -199,12 +199,12 @@
         <?php
         if ( isset($_SESSION['error']) )
         {
-            echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
             unset($_SESSION['error']);
         }
         if ( isset($_SESSION['success']))
         {
-            echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
+            echo('<p style="color: green;">'.$_SESSION['success']."</p>\n");
                 unset($_SESSION['success']);
         }
         ?>
@@ -239,7 +239,7 @@
         
         <div class="input-group">
         <span class="input-group-addon">Company Name</span>
-        <select id="drop-other" name="company" class="form-control" onchange="Company();" required="">
+        <select id="drop-other-company" name="company" class="form-control" onchange="Company();" required="">
         <?php
             
             $qr=$pdo->query("SELECT DISTINCT name from company");
@@ -255,9 +255,9 @@
     </div><br>
     <div class="input-group">
         <span class="input-group-addon">New Company Name</span>   
-        <input type="text" class="form-control" name="company2" id="hide-drop-other" onchange="Other('hide-drop-other')" placeholder="Enter New Company Name">
+        <input type="text" class="form-control" name="company2" id="hide-drop-other-company" onchange="Other('hide-drop-other')" placeholder="Enter New Company Name">
     </div><br>
-    <input type="text" id="alert-server-new" name="alert-server-new" value="1" hidden>
+    <input type="text" id="alert-server-new-company" name="alert-server-new-company" value="1" hidden>
 
 
 
@@ -310,7 +310,7 @@
 
         <div class="input-group">
         <span class="input-group-addon">Quantity </span>
-        <input type="number" name="qty" required class="form-control" id="qty" onchange="Number('qty')"placeholder="Total Quantity"> </div><br/>
+        <input type="number" name="qty" required class="form-control" id="qty" onchange="Number('qty')"placeholder="Total Quantity" MIN=1> </div><br/>
 
         <input type="submit" value="Add Device" class="btn btn-info">
         <a class ="link-no-format" href="home.php"><div class="btn btn-my">Cancel</div></a>

@@ -18,14 +18,19 @@
     {
         if ( strlen($_POST['mac_addr']) < 1 )
         {
-            $_SESSION['error'] = "All Fields are required";
+            $_SESSION['error'] = "All Fields are required<br>";
             header('Location: deletemc.php');
             return;
         }
         else
         {
             $flag=0;
-            for($i=$_POST['mac_addr'];$i<=$_POST['mac_addr2'];$i++)
+            $to;
+            if(empty($_POST['mac_addr2']))
+                $to=$_POST['mac_addr'];
+            else
+                $to=$_POST['mac_addr2'];
+            for($i=$_POST['mac_addr'];$i<=$to;$i++)
             {
                 $stmt = $pdo->prepare('SELECT *,COUNT(*) FROM machine WHERE MAC_ADDR = :mac_addr');
                 $stmt->execute(array(':mac_addr' => $i));
@@ -48,11 +53,11 @@
 
                      $stmt = $pdo->prepare('DELETE FROM machine WHERE mac_addr = :mac_addr');
                         $stmt->execute(array(':mac_addr' => $i));
-                    $_SESSION['success'].="Machine".$i." deleted Successfully\n";
+                    $_SESSION['success'].="Machine".$i." deleted Successfully<br>";
                 }
                 else
                 {
-                    $_SESSION['error'] = "Other Machines does not Exists\n";
+                    $_SESSION['error'] = "Other Machines does not Exists<br>";
                     $flag++;
                 }
             }
@@ -92,26 +97,26 @@
     <div id="error" style="color: red; margin-left: 90px; margin-bottom: 20px;">
         </div>
     <?php
-    if ( isset($_SESSION['error']) )
-    {
-        echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
-        unset($_SESSION['error']);
-    }
-    if ( isset($_SESSION['success']))
+        if ( isset($_SESSION['error']) )
         {
-            echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
-                unset($_SESSION['success']);
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
+            unset($_SESSION['error']);
+        }
+        if ( isset($_SESSION['success']))
+        {
+            echo('<p style="color: green;">'.$_SESSION['success']."</p>\n");
+            unset($_SESSION['success']);
         }
     ?>
 
     <form method="POST" action="deletemc.php" class="col-xs-5">
 
     <div class="input-group">
-    <span class="input-group-addon">MAC ADDRESS (from)</span>
+    <span class="input-group-addon">MACHINE No. (from)</span>
     <input type="text" name="mac_addr" class="form-control" required="" placeholder="Starting machine id" id="mcs" onchange="Number('mcs')"> </div><br/>
 
     <div class="input-group">
-    <span class="input-group-addon">MAC ADDRESS (to)</span>
+    <span class="input-group-addon">MACHINE No. (to)</span>
     <input type="text" name="mac_addr2" class="form-control" placeholder="Ending machine id" id="mce" onchange="Number('mce')"> </div><br/>
 
 

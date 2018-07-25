@@ -37,7 +37,7 @@
 
                 if($rowq['state']!='0' || $rowname['name']!='processor')
                 {
-                    $_SESSION['error'] = "Wrong Hardware ID selected";
+                    $_SESSION['error'] = "Wrong Hardware ID selected<br>";
                     header("Location:home.php");
                     return;
                 }
@@ -61,7 +61,7 @@
 
                 if($rowq['state']!='0' || $rowname['name']!='ram')
                 {
-                    $_SESSION['error'] = "Wrong Hardware ID selected";
+                    $_SESSION['error'] = "Wrong Hardware ID selected<br>";
                     header("Location:home.php");
                     return;
                 }
@@ -85,7 +85,7 @@
 
                 if($rowq['state']!='0' || $rowname['name']!='harddisk')
                 {
-                    $_SESSION['error'] = "Wrong Hardware ID selected";
+                    $_SESSION['error'] = "Wrong Hardware ID selected<br>";
                     header("Location:home.php");
                     return;
                 }
@@ -109,7 +109,7 @@
 
                 if($rowq['state']!='0' || $rowname['name']!='monitor')
                 {
-                    $_SESSION['error'] = "Wrong Hardware ID selected";
+                    $_SESSION['error'] = "Wrong Hardware ID selected<br>";
                     header("Location:home.php");
                     return;
                 }
@@ -178,7 +178,7 @@
         else
         {
                  
-            $_SESSION['error'] = "All Fields are required";
+            $_SESSION['error'] = "All Fields are required<br>";
             header('Location: home.php');
             return;
         }
@@ -209,15 +209,15 @@
     </div>
     <div id="error" style="color: red; margin-left: 90px; margin-bottom: 20px;"></div>
     <?php
-    if ( isset($_SESSION['error']) )
-    {
-        echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
-        unset($_SESSION['error']);
-    }
-    if ( isset($_SESSION['success']))
+        if ( isset($_SESSION['error']) )
         {
-            echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
-                unset($_SESSION['success']);
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
+            unset($_SESSION['error']);
+        }
+        if ( isset($_SESSION['success']))
+        {
+            echo('<p style="color: green;">'.$_SESSION['success']."</p>\n");
+            unset($_SESSION['success']);
         }
     ?>
 
@@ -229,7 +229,7 @@
                 <div class='input-group-addon'>
                     Processor
                 </div>
-                <input type='text' name='processor' required='' class='form-control'>
+                <input type='text' name='processor' required='' class='form-control' placeholder='Enter Hardware ID'>
             </div><br>";
         if ($row['ram']=='1')
         echo "
@@ -237,7 +237,7 @@
             <div class='input-group-addon'>
                 Ram
             </div>
-            <input type='text' name='ram' required='' class='form-control'>
+            <input type='text' name='ram' required='' class='form-control placeholder='Enter Hardware ID''>
         </div><br>";
         if ($row['harddisk']=='1')
             echo "
@@ -245,7 +245,7 @@
                 <div class='input-group-addon'>
                     Harddisk
                 </div>
-                <input type='text' name='harddisk' required='' class='form-control'>
+                <input type='text' name='harddisk' required='' class='form-control placeholder='Enter Hardware ID''>
             </div><br>";
         if ($row['mouse']=='1')
             echo "
@@ -253,7 +253,7 @@
                 <div class='input-group-addon'>
                     Mouse
                 </div>
-                <input type='text' name='mouse' required='' class='form-control'>
+                <input type='text' name='mouse' required='' class='form-control placeholder='Enter Hardware ID''>
             </div><br>";
         if ($row['keyboard']=='1')
             echo "
@@ -261,7 +261,7 @@
                 <div class='input-group-addon'>
                     Keyboard
                 </div>
-                <input type='text' name='keyboard' required='' class='form-control'>
+                <input type='text' name='keyboard' required='' class='form-control placeholder='Enter Hardware ID''>
             </div><br>";
         if ($row['monitor']=='1')
             echo "
@@ -269,14 +269,13 @@
                 <div class='input-group-addon'>
                     Monitor
                 </div>
-                <input type='text' name='monitor' required='' class='form-control'>
+                <input type='text' name='monitor' required='' class='form-control placeholder='Enter Hardware ID''>
             </div><br>";
         ?>
         <input type="submit" name="submit" class="btn btn-my">
     </form>
-    </div>
-
-    <form  method="post" action="" class="form-inline" >
+    
+    <form  method="post" action="" class="form-inline col-xs-12" >
             <label id="processor">Device Name</label>
                 <select class="form-control" id="chillana" name="chillana" >
                     <?php
@@ -287,17 +286,10 @@
                         }
                     ?>    
                 </select>
-            <label id="state">State</label>
-                <select class="form-control" id="state" name="state">           
-                    <option value="0">Unpositioned</option>
-                    <option value="1">Positioned</option>
-                    <option value="2">Issued</option> 
-                </select>
+
             <button class="btn btn-my" id="searchhardware" value="Search">Search</button>
         </form>
 <?php
-
-
         if(isset($_POST['chillana']))
         {
             $stmtcnt = $pdo->query("SELECT COUNT(*) FROM hardware");
@@ -309,9 +301,9 @@
                 $stmtread->execute(array(":name"=>$_POST['chillana']));
                 $nameid=$stmtread->fetch(PDO::FETCH_ASSOC);
                 $stmtread = $pdo->prepare("SELECT * FROM hardware  where name= :name AND state=:state ORDER BY name");
-                $stmtread->execute(array(":name"=>$nameid['name_id'],":state"=>$_POST['state']));
+                $stmtread->execute(array(":name"=>$nameid['name_id'],":state"=>0));
                 echo ("<table class=\"table table-striped col-xs-12\">
-                    <tr> <th>S.no.</th><th>Hardware ID</th><th>Name</th><th>description</th><th>Company</th><th>GRN</th><th>Supplier</th><th>State</th></tr>");
+                    <tr> <th>S.no.</th><th>Hardware ID</th><th>Name</th><th>description</th><th>Company</th><th>GRN</th><th>Supplier</th></tr>");
                 while ( $row = $stmtread->fetch(PDO::FETCH_ASSOC) )
                 {
                     $stmtn = $pdo->prepare("SELECT name FROM company where company_id = :cname ");
@@ -348,21 +340,14 @@
                     echo ("</td>");
                     echo ("<td>");
                     echo(htmlentities($supplierid['supname']));
-                    echo ("</td>");
-                    echo ("<td>");
-                    if($_POST['state']==0)
-                        echo "Unpositoned";
-                    else if($_POST['state']==1)
-                        echo "Positioned";
-                    else if($_POST['state']==2)
-                        echo "Issued";
-                    echo ("</td>")  ;     
+                    echo ("</td>");     
                     $i++;
                 }
                 echo('</table>');
             }
         }
     ?>
+    </div>
     </div>
 </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

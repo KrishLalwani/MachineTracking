@@ -17,7 +17,7 @@
 
     if(!isset($_GET['id']))
     {
-        $_SESSION['error'].="No such page exsists";
+        $_SESSION['error'].="No such page exsists<br>";
         header("Location:home.php");
         return;
     }
@@ -26,13 +26,13 @@
     $row=$stmt->fetch(PDO::FETCH_ASSOC);
     if($row['COUNT(*)']==0)
     {
-        $_SESSION['error'].="No such page exsists";
+        $_SESSION['error'].="No such page exsists<br>";
         header("Location:home.php");
         return;
     }
     $stmt=$pdo->prepare("DELETE FROM issue_request WHERE issue_report_id = :id");
     $stmt->execute(array(":id"=>$_GET['id']));
-    $_SESSION['success'].="Request Successfully Deleted";
+    $_SESSION['success'].="Request Successfully Deleted<br>";
     header("Location:home.php");
     return;
     

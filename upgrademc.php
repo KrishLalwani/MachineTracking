@@ -36,23 +36,23 @@
     <h1>UPGRADE MACHINE</h1>
     </div>
     <?php
-    if ( isset($_SESSION['error']) )
-    {
-        echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
-        unset($_SESSION['error']);
-    }
-    if ( isset($_SESSION['success']))
+        if ( isset($_SESSION['error']) )
         {
-            echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
-                unset($_SESSION['success']);
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
+            unset($_SESSION['error']);
+        }
+        if ( isset($_SESSION['success']))
+        {
+            echo('<p style="color: green;">'.$_SESSION['success']."</p>\n");
+            unset($_SESSION['success']);
         }
     ?>
 
-    <form method="POST" action="editmc.php" class="col-xs-5">
+    <form method="GET" action="editmc.php" class="col-xs-5">
 
     <div id="error" style="color: red; margin-left: 90px; margin-bottom: 20px;"></div>
     <div class="input-group">
-    <span class="input-group-addon">MAC ADDRESS </span>
+    <span class="input-group-addon">MACHINE No. </span>
     <input type="text" name="mac_addr" required class="form-control" id="mac_addr" onchange="Number('mac_addr')" placeholder="Computer No. (only integers)"> </div><br/>
 
 

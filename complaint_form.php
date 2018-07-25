@@ -42,7 +42,12 @@
                 $stmt = $pdo->prepare('SELECT * FROM complaint_book WHERE machine_id = :mid AND completed IS NULL');
                 $stmt->execute(array(':mid' => $mid));
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                if($row === FALSE)
+
+                $stmt2 = $pdo->prepare('SELECT * FROM machine WHERE machine_id = :mid AND state = "INACTIVE"');
+                $stmt2->execute(array(':mid' => $mid));
+                $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+                if($row === FALSE && $row2 === FALSE)
                 {
                     $_POST['dop']=date('y-m-d',strtotime($_POST['dop']));
                 $stmt = $pdo->prepare('INSERT INTO complaint_book (date_of_complaint, machine_id, complaint_details, priority, complaint_by) VALUES (:doc, :mid, :cd, :priority, :complaint_by)');
@@ -102,22 +107,22 @@
     </div>
     <div id="error" style="color: red; margin-left: 90px; margin-bottom: 20px;"></div>
     <?php
-    if ( isset($_SESSION['error']) )
-    {
-        echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
-        unset($_SESSION['error']);
-    }
-    if ( isset($_SESSION['success']))
+        if ( isset($_SESSION['error']) )
         {
-            echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
-                unset($_SESSION['success']);
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
+            unset($_SESSION['error']);
+        }
+        if ( isset($_SESSION['success']))
+        {
+            echo('<p style="color: green;">'.$_SESSION['success']."</p>\n");
+            unset($_SESSION['success']);
         }
     ?>
 
     <form method="POST" action="complaint_form.php" class="col-xs-5">
 
     <div class="input-group">
-    <span class="input-group-addon">MAC ADDRESS </span>
+    <span class="input-group-addon">MACHINE No. </span>
     <input type="text" name="mac_addr" required="" class="form-control" id="mac_addr" onchange="Number('mac_addr')" placeholder="Computer No. (only integers)"> </div><br/>
 
     <div class="input-group">

@@ -30,12 +30,12 @@
         <?php
             if ( isset($_SESSION['success']))
             {
-                echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
+                echo('<p style="color: green;">'.$_SESSION['success']."</p>");
                 unset($_SESSION['success']);
             }
             if ( isset($_SESSION['error']))
             {
-                echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
+                echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
                 unset($_SESSION['error']);
             }
 
@@ -48,7 +48,7 @@
                 {
                     echo "<h2>Repaired Machines</h2>";
                     $i=1;
-                    $stmtread = $pdo->query("SELECT * FROM complaint_book JOIN repair_history ON complaint_book.machine_id = repair_history.machine_id WHERE complaint_book.remarks IS NOT NULL AND repair_history.fault IS NULL");
+                    $stmtread = $pdo->query("SELECT * FROM complaint_book JOIN repair_history ON complaint_book.complaint_book_id = repair_history.complaint_book_id WHERE complaint_book.remarks IS NOT NULL AND repair_history.fault IS NULL");
                     echo ("<table class=\"table table-striped\">
                         <tr> <th>S.no.</th><th>Date of Complaint</th><th>MAC_ADDR</th><th>Complaint Details</th><th>Priority</th><th>Complaint By</th><th>Remarks</th><th>Action</th> </tr>");
                     while ( $row = $stmtread->fetch(PDO::FETCH_ASSOC) )
@@ -416,7 +416,7 @@
                             echo($i);
                             echo("</td>");
                             echo ("<td>");
-                            echo(htmlentities($row['DOPR']));
+                            echo(htmlentities($row['Date_of_complaint']));
                             echo ("</td>");
                             echo ("<td>");
                             echo(htmlentities($rowr['MAC_ADDR']));
@@ -510,7 +510,7 @@
 
                if($row['COUNT(*)']!=='0')
                 {
-                    echo "<h2>Repair Jobs</h2>";
+                    echo "<h2>Repair Jobs PC</h2>";
                     $i=1;
                     $stmtread = $pdo->query("SELECT * FROM complaint_book WHERE remarks IS NULL");
                     echo ("<table class=\"table table-striped\">
@@ -538,13 +538,15 @@
                         echo ("</td>");
                         echo ("<td>");
 
-                        $stmtc = $pdo->prepare("SELECT * FROM complaint_book WHERE machine_id = :mid AND (processor = 1 OR ram = 1 OR harddisk = 1 OR mouse = 1 OR monitor = 1 OR keyboard = 1) ");
+                        $stmtc = $pdo->prepare("SELECT * FROM complaint_book WHERE machine_id = :mid AND (processor = 1 OR ram = 1 OR harddisk = 1 OR mouse =1  OR monitor =1  OR keyboard = 1) AND (completed IS NULL) ");
+//                        var_dump($row['machine_id']);
                         $stmtc->execute(array(':mid' => $row['machine_id']));
                         $rowc = $stmtc->fetch(PDO::FETCH_ASSOC);
 
                         $stmtc2 = $pdo->prepare("SELECT * FROM temp WHERE machine_id = :mid ");
                         $stmtc2->execute(array(':mid' => $row['machine_id']));
                         $rowc2 = $stmtc2->fetch(PDO::FETCH_ASSOC);
+                        
 
                         if($rowc == false)
                         {
@@ -574,7 +576,7 @@
                 $row = $stmtcnt->fetch(PDO::FETCH_ASSOC);
                if($row['COUNT(*)']!=='0')
                 {
-                    echo "<h2>Repair Jobs</h2>";
+                    echo "<h2>Repair Jobs Hardware</h2>";
                     $i=1;
                     $stmtread = $pdo->query("SELECT * FROM hardware_complaint_book WHERE remarks IS NULL AND work_for = ".$_SESSION['id']."");
                     echo ("<table class=\"table table-striped\">

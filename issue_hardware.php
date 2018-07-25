@@ -17,7 +17,7 @@
 
     if(!isset($_GET['id']))
     {
-        $_SESSION['error'].="No such page exsists";
+        $_SESSION['error'].="No such page exsists<br>";
         header("Location:home.php");
         return;
     }
@@ -26,7 +26,7 @@
     $row=$stmt->fetch(PDO::FETCH_ASSOC);
     if($row['COUNT(*)']==0)
     {
-        $_SESSION['error'].="No such page exsists";
+        $_SESSION['error'].="No such page exsists<br>";
         header("Location:home.php");
         return;
     }

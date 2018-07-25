@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
--- http://www.phpmyadmin.net
+-- version 4.8.1
+-- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 25, 2018 at 11:01 AM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.20
+-- Generation Time: Jul 24, 2018 at 11:17 AM
+-- Server version: 10.1.33-MariaDB
+-- PHP Version: 7.2.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -36,12 +38,7 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`company_id`, `name`) VALUES
-(1, 'Segate'),
-(2, 'UV'),
-(3, 'Google'),
-(4, NULL),
-(5, NULL),
-(6, 'Intel');
+(1, 'Segate');
 
 -- --------------------------------------------------------
 
@@ -68,21 +65,6 @@ CREATE TABLE `complaint_book` (
   `completed` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `complaint_book`
---
-
-INSERT INTO `complaint_book` (`complaint_book_id`, `Date_of_complaint`, `machine_id`, `complaint_details`, `priority`, `work_for`, `remarks`, `complaint_by`, `processor`, `ram`, `harddisk`, `mouse`, `keyboard`, `monitor`, `DOPR`, `completed`) VALUES
-(2, '2018-07-24', 2, 'RAM', 2, 1, NULL, 'Anurag Phadnis', 1, 1, 1, 1, 1, 1, NULL, -1),
-(4, '2018-07-27', 2, 'RAM', 2, NULL, NULL, 'Vaishali Chourey', 1, 1, 1, 1, 1, 1, NULL, -1),
-(5, '2018-07-27', 2, 'ram', 2, NULL, NULL, 'Vaishali Chourey', 1, 1, 1, 1, 1, 1, NULL, NULL),
-(6, '2018-07-28', 4, 'Blast in CPU', 1, 1, 'No Blast was there', 'Vaishali Chourey', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(7, '2018-07-28', 4, 'Not wokring', 1, 1, 'Format', 'Vaishali Chourey', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(8, '2018-07-28', 4, 'Not wokring', 1, 1, 'OS Reinstalled', 'Vaishali Chourey', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(9, '2018-07-25', 6, 'NEW TEEST', 7, 1, 'DONE', 'Vaishali Chourey', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(10, '2018-07-25', 6, 'NEW NEW TEEST', 3, 1, 'FIXED', 'Vaishali Chourey', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(11, '2018-07-25', 6, 'NEW NEW', 2, 1, 'FIXED', 'Vaishali Chourey', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -97,14 +79,6 @@ CREATE TABLE `device_repair_history` (
   `fault` varchar(500) DEFAULT NULL,
   `cost` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `device_repair_history`
---
-
-INSERT INTO `device_repair_history` (`repair_history_id`, `hardware_id`, `initial_date`, `final_date`, `fault`, `cost`) VALUES
-(1, 5, '2018-07-27', '0000-00-00', NULL, NULL),
-(2, 20, '2018-07-28', '0000-00-00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -133,73 +107,7 @@ INSERT INTO `hardware` (`hardware_id`, `company`, `description`, `price`, `grn`,
 (2, 1, 1, 5000, 123456, 7, 0, 1, '2018-07-24'),
 (3, 1, 1, 5000, 123456, 7, 0, 1, '2018-07-24'),
 (4, 1, 1, 5000, 123456, 7, 0, 1, '2018-07-24'),
-(5, 1, 1, 5000, 123456, 7, 3, 1, '2018-07-24'),
-(8, 1, 15, NULL, 121, 4, 0, 1, '2018-07-24'),
-(12, 1, 16, NULL, 121, 6, 1, 1, '2018-07-24'),
-(13, 1, 21, NULL, 121, 5, 1, 1, '2018-07-24'),
-(14, 1, 15, NULL, 121, 4, 0, 1, '2018-07-24'),
-(15, 1, 5, NULL, 121, 1, 1, 1, '2018-07-24'),
-(16, 1, 22, NULL, 121, 2, 1, 1, '2018-07-24'),
-(17, 1, 23, NULL, 121, 3, 1, 1, '2018-07-24'),
-(18, 2, 13, 2000, 1144, 4, 1, 1, '2018-07-24'),
-(20, 2, 4, 1000, 1123, 1, 3, 1, '2018-07-24'),
-(21, 2, 4, 1000, 1123, 1, 1, 1, '2018-07-24'),
-(22, 2, 16, NULL, 12132, 6, 1, 1, '2018-07-24'),
-(23, 2, 18, NULL, 12132, 5, 1, 1, '2018-07-24'),
-(24, 2, 12, NULL, 12132, 4, 1, 1, '2018-07-24'),
-(25, 2, 3, NULL, 12132, 1, 1, 1, '2018-07-24'),
-(26, 2, 7, NULL, 12132, 2, 1, 1, '2018-07-24'),
-(27, 2, 10, NULL, 12132, 3, 1, 1, '2018-07-24'),
-(28, 2, 16, NULL, 12132, 6, 1, 1, '2018-07-24'),
-(29, 2, 18, NULL, 12132, 5, 1, 1, '2018-07-24'),
-(30, 2, 12, NULL, 12132, 4, 1, 1, '2018-07-24'),
-(31, 2, 3, NULL, 12132, 1, 1, 1, '2018-07-24'),
-(32, 2, 7, NULL, 12132, 2, 1, 1, '2018-07-24'),
-(33, 2, 10, NULL, 12132, 3, 1, 1, '2018-07-24'),
-(34, 2, 16, NULL, 12132, 6, 1, 1, '2018-07-24'),
-(35, 2, 18, NULL, 12132, 5, 1, 1, '2018-07-24'),
-(36, 2, 12, NULL, 12132, 4, 1, 1, '2018-07-24'),
-(37, 2, 3, NULL, 12132, 1, 1, 1, '2018-07-24'),
-(38, 2, 7, NULL, 12132, 2, 1, 1, '2018-07-24'),
-(39, 2, 10, NULL, 12132, 3, 1, 1, '2018-07-24'),
-(40, 2, 16, NULL, 12132, 6, 1, 1, '2018-07-24'),
-(41, 2, 18, NULL, 12132, 5, 1, 1, '2018-07-24'),
-(42, 2, 12, NULL, 12132, 4, 1, 1, '2018-07-24'),
-(43, 2, 3, NULL, 12132, 1, 1, 1, '2018-07-24'),
-(44, 2, 7, NULL, 12132, 2, 1, 1, '2018-07-24'),
-(45, 2, 10, NULL, 12132, 3, 1, 1, '2018-07-24'),
-(46, 1, 25, NULL, 12345, 6, 0, 1, '2018-07-24'),
-(58, 1, 25, NULL, 12345, 6, 1, 1, '2018-07-24'),
-(59, 1, 18, NULL, 12345, 5, 1, 1, '2018-07-24'),
-(60, 1, 14, NULL, 12345, 4, 1, 1, '2018-07-24'),
-(61, 1, 3, NULL, 12345, 1, 1, 1, '2018-07-24'),
-(62, 1, 8, NULL, 12345, 2, 1, 1, '2018-07-24'),
-(63, 1, 11, NULL, 12345, 3, 1, 1, '2018-07-24'),
-(64, 1, 25, NULL, 12345, 6, 1, 1, '2018-07-24'),
-(65, 1, 18, NULL, 12345, 5, 1, 1, '2018-07-24'),
-(66, 1, 14, NULL, 12345, 4, 1, 1, '2018-07-24'),
-(67, 1, 3, NULL, 12345, 1, 1, 1, '2018-07-24'),
-(68, 1, 8, NULL, 12345, 2, 1, 1, '2018-07-24'),
-(69, 1, 11, NULL, 12345, 3, 1, 1, '2018-07-24'),
-(76, 1, 16, NULL, 12345, 6, 1, 1, '2018-07-24'),
-(77, 1, 18, NULL, 12345, 5, 1, 1, '2018-07-24'),
-(78, 1, 12, NULL, 12345, 4, 1, 1, '2018-07-24'),
-(79, 1, 3, NULL, 12345, 1, 1, 1, '2018-07-24'),
-(80, 1, 7, NULL, 12345, 2, 1, 1, '2018-07-24'),
-(81, 1, 10, NULL, 12345, 3, 1, 1, '2018-07-24'),
-(82, 1, 17, 12, 123456, 6, 0, 1, '2018-07-24'),
-(83, 1, 17, 12, 123456, 6, 0, 1, '2018-07-24'),
-(85, 1, 17, 12, 123456, 6, 0, 1, '2018-07-24'),
-(86, 1, 17, 12, 123456, 6, 0, 1, '2018-07-24'),
-(87, 3, 26, 500, 124585, 10, 0, 1, '2018-07-28'),
-(88, 6, 18, 500, 45210, 5, 0, 1, '2018-07-25'),
-(89, 6, 18, 500, 45210, 5, 0, 1, '2018-07-25'),
-(90, 6, 18, 500, 45210, 5, 0, 1, '2018-07-25'),
-(91, 6, 18, 500, 45210, 5, 0, 1, '2018-07-25'),
-(92, 6, 18, 500, 45210, 5, 0, 1, '2018-07-25'),
-(93, 6, 21, 5000, 45110, 5, 0, 1, '2018-07-25'),
-(94, 6, 21, 5000, 45110, 5, 0, 1, '2018-07-25'),
-(95, 6, 21, 5000, 45110, 5, 0, 1, '2018-07-25');
+(5, 1, 1, 5000, 123456, 7, 2, 1, '2018-07-24');
 
 -- --------------------------------------------------------
 
@@ -218,14 +126,6 @@ CREATE TABLE `hardware_complaint_book` (
   `complaint_by` varchar(40) DEFAULT NULL,
   `completed` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `hardware_complaint_book`
---
-
-INSERT INTO `hardware_complaint_book` (`hardware_complaint_book_id`, `date_of_complaint`, `hardware_id`, `complaint_details`, `priority`, `work_for`, `remarks`, `complaint_by`, `completed`) VALUES
-(1, '2018-07-27', 5, 'hd', 2, 1, NULL, 'Vaishali Chourey', NULL),
-(2, '2018-07-28', 20, 'Wire Cut by real mouse', 1, 1, NULL, 'Vaishali Chourey', NULL);
 
 -- --------------------------------------------------------
 
@@ -250,9 +150,7 @@ INSERT INTO `hardware_position` (`hardware_position_id`, `hardware_id`, `lab_id`
 (3, 1, NULL, 1, '2018-07-24', NULL),
 (4, 3, NULL, 1, '2018-07-24', '0000-00-00'),
 (5, 1, NULL, 1, '2018-07-24', '2018-07-24'),
-(6, 5, NULL, 1, '2018-07-24', '2018-07-27'),
-(7, 20, 1, NULL, '2018-07-24', '2018-07-28'),
-(8, 21, 1, NULL, '2018-07-28', '0000-00-00');
+(6, 5, NULL, 1, '2018-07-24', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -269,6 +167,16 @@ CREATE TABLE `issue_request` (
   `name_of_hardware` int(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `issue_request`
+--
+
+INSERT INTO `issue_request` (`issue_report_id`, `department`, `id`, `purpose`, `date_of_request`, `name_of_hardware`) VALUES
+(1, 'CS', 1, 'Seminar', '2018-07-24', NULL),
+(2, 'CS', 1, 'Seminar', '2018-07-24', NULL),
+(3, 'CS', 1, 'Next Seminar', '2018-07-24', NULL),
+(4, 'asdf', 1, 'asdf', '2018-07-24', 7);
+
 -- --------------------------------------------------------
 
 --
@@ -280,14 +188,6 @@ CREATE TABLE `lab` (
   `name` varchar(20) DEFAULT NULL,
   `department` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `lab`
---
-
-INSERT INTO `lab` (`lab_id`, `name`, `department`) VALUES
-(1, 'C4', 'IT'),
-(2, 'first', 'IT');
 
 -- --------------------------------------------------------
 
@@ -311,20 +211,6 @@ CREATE TABLE `machine` (
   `grn` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `machine`
---
-
-INSERT INTO `machine` (`machine_id`, `MAC_ADDR`, `processor`, `ram`, `memory`, `DOP`, `price`, `state`, `os`, `monitor`, `keyboard`, `mouse`, `grn`) VALUES
-(2, '91', 13, 12, 18, '2018-07-24', 18999, 'INACTIVE', 'osx', 17, 16, 15, 121),
-(3, '93', 23, 22, 24, '2018-07-24', 1233, 'ACTIVE', 'windows', 27, 26, 25, 12132),
-(4, '94', 29, 28, 30, '2018-07-24', 1233, 'ACTIVE', 'windows', 33, 32, 31, 12132),
-(5, '95', 35, 34, 36, '2018-07-24', 1233, 'ACTIVE', 'windows', 39, 38, 37, 12132),
-(6, '96', 41, 40, 42, '2018-07-24', 1233, 'INACTIVE', 'windows', 45, 44, 43, 12132),
-(9, '33', 59, 58, 60, '2018-07-24', 0, 'ACTIVE', 'windows', 63, 62, 61, 12345),
-(10, '34', 65, 64, 66, '2018-07-24', 0, 'ACTIVE', 'windows', 69, 68, 67, 12345),
-(12, '92', 77, 76, 78, '2018-07-24', 0, 'ACTIVE', 'windows', 81, 80, 79, 12345);
-
 -- --------------------------------------------------------
 
 --
@@ -339,7 +225,7 @@ CREATE TABLE `member` (
   `email` varchar(50) DEFAULT NULL,
   `pass_word` varchar(512) DEFAULT NULL,
   `role` int(5) DEFAULT NULL,
-  `contact_no` varchar(10) DEFAULT NULL
+  `contact_no` int(13) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -348,7 +234,7 @@ CREATE TABLE `member` (
 
 INSERT INTO `member` (`member_id`, `id`, `first_name`, `last_name`, `email`, `pass_word`, `role`, `contact_no`) VALUES
 (0, '0', 'Vaishali', 'Chourey', 'vaishali@medicaps.ac.in', '4f2a91d6913739834ec9c3d4f9203534', 0, NULL),
-(1, '25', 'Anurag', 'Phadnis', 'anurag@phadnis.com', '4f2a91d6913739834ec9c3d4f9203534', 2, '1234567890');
+(1, '25', 'Anurag', 'Phadnis', 'anurag@phadnis.com', '4f2a91d6913739834ec9c3d4f9203534', 1, 1234567890);
 
 -- --------------------------------------------------------
 
@@ -372,10 +258,7 @@ INSERT INTO `name` (`name_id`, `name`) VALUES
 (4, 'harddisk'),
 (5, 'processor'),
 (6, 'ram'),
-(7, 'External Harddisk'),
-(8, ''),
-(9, 'Projector'),
-(10, 'Smart Board');
+(7, 'External Harddisk');
 
 -- --------------------------------------------------------
 
@@ -391,19 +274,6 @@ CREATE TABLE `position` (
   `final_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `position`
---
-
-INSERT INTO `position` (`position_id`, `machine_id`, `lab_id`, `initial_date`, `final_date`) VALUES
-(3, 9, 2, '2018-07-27', '1970-01-01'),
-(4, 10, 2, '2018-07-27', '1970-01-01'),
-(5, 4, NULL, '1970-01-01', '2018-07-28'),
-(6, 4, NULL, '1970-01-01', '2018-07-28'),
-(7, 4, NULL, '1970-01-01', '1970-01-01'),
-(8, 6, NULL, '1970-01-01', '2018-07-25'),
-(9, 6, NULL, '1970-01-01', '2018-07-25');
-
 -- --------------------------------------------------------
 
 --
@@ -416,22 +286,8 @@ CREATE TABLE `repair_history` (
   `initial_date` date DEFAULT NULL,
   `final_date` date DEFAULT NULL,
   `fault` varchar(500) DEFAULT NULL,
-  `cost` int(11) DEFAULT NULL,
-  `complaint_book_id` int(11) DEFAULT NULL
+  `cost` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `repair_history`
---
-
-INSERT INTO `repair_history` (`repair_history_id`, `machine_id`, `initial_date`, `final_date`, `fault`, `cost`, `complaint_book_id`) VALUES
-(1, 2, '2018-07-24', '0000-00-00', NULL, NULL, NULL),
-(4, 4, '2018-07-28', '1970-01-01', 'Nothing', 0, NULL),
-(5, 4, '2018-07-28', '1970-01-01', 'OS corrupted', 0, NULL),
-(6, 4, '2018-07-28', '1970-01-01', 'OS corrupted', 0, NULL),
-(8, 6, '2018-07-25', '2018-07-25', 'NEW', 333, 9),
-(9, 6, '2018-07-25', '2018-07-25', 'TESTED', 222, 10),
-(10, 6, '2018-07-25', '0000-00-00', NULL, NULL, 11);
 
 -- --------------------------------------------------------
 
@@ -466,30 +322,7 @@ CREATE TABLE `specification` (
 
 INSERT INTO `specification` (`spec_id`, `spec`, `name_id`) VALUES
 (1, '2TB', 7),
-(2, '2TB', 7),
-(3, 'Wireless Mouse', 1),
-(4, 'Trackball Mouse', 1),
-(5, 'Optical Mouse', 1),
-(6, 'Laser Mouse', 1),
-(7, 'Wired Membrane', 2),
-(8, 'Wireless Membrane', 2),
-(9, 'Wired Mechanical', 2),
-(10, 'LCD', 3),
-(11, 'LED', 3),
-(12, '128 GB', 4),
-(13, '256 GB', 4),
-(14, '1 TB', 4),
-(15, '2 TB', 4),
-(16, '2 GB', 6),
-(17, '1 GB', 6),
-(18, 'Intel Pentium Dual Core', 5),
-(19, 'Intel i3 Processors (Ivy Bridge)', 5),
-(20, 'Intel i5 Processors', 5),
-(21, 'Intel i7 Processors', 5),
-(22, 'Wireless Mechanical', 2),
-(23, 'CRT Monitor', 3),
-(25, '8 GB', 6),
-(26, '19''', 10);
+(2, '2TB', 7);
 
 -- --------------------------------------------------------
 
@@ -554,13 +387,6 @@ CREATE TABLE `temp` (
   `monitor` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `temp`
---
-
-INSERT INTO `temp` (`temp_id`, `machine_id`, `processor`, `ram`, `mouse`, `harddisk`, `keyboard`, `monitor`) VALUES
-(1, 6, 88, NULL, NULL, NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -580,13 +406,6 @@ CREATE TABLE `transfer_request` (
   `quantity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `transfer_request`
---
-
-INSERT INTO `transfer_request` (`transfer_request_id`, `date_of_request`, `name`, `department`, `purpose`, `processor`, `ram`, `hdd`, `os`, `quantity`) VALUES
-(1, '2018-07-28', 'Vaishali Chourey', 'CS', 'Gaming', 'Intel i7 Processors', '8 GB', '2 TB', 'windows', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -604,14 +423,6 @@ CREATE TABLE `upgrade_history` (
   `memoryf` int(11) DEFAULT NULL,
   `dateofupgrade` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `upgrade_history`
---
-
-INSERT INTO `upgrade_history` (`upgrade_history_id`, `machine_id`, `processori`, `rami`, `memoryi`, `processorf`, `ramf`, `memoryf`, `dateofupgrade`) VALUES
-(1, 2, 13, 12, 14, 13, 12, 14, '2018-07-24'),
-(2, 2, 13, 12, 14, 13, 12, 18, '2018-07-24');
 
 --
 -- Indexes for dumped tables
@@ -716,8 +527,7 @@ ALTER TABLE `position`
 --
 ALTER TABLE `repair_history`
   ADD PRIMARY KEY (`repair_history_id`),
-  ADD KEY `machine_id` (`machine_id`),
-  ADD KEY `cid_fk` (`complaint_book_id`);
+  ADD KEY `machine_id` (`machine_id`);
 
 --
 -- Indexes for table `software`
@@ -796,107 +606,128 @@ ALTER TABLE `upgrade_history`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `complaint_book`
 --
 ALTER TABLE `complaint_book`
-  MODIFY `complaint_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `complaint_book_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `device_repair_history`
 --
 ALTER TABLE `device_repair_history`
-  MODIFY `repair_history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `repair_history_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `hardware`
 --
 ALTER TABLE `hardware`
-  MODIFY `hardware_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `hardware_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT for table `hardware_complaint_book`
 --
 ALTER TABLE `hardware_complaint_book`
-  MODIFY `hardware_complaint_book_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'AUTO_INCREMENT', AUTO_INCREMENT=3;
+  MODIFY `hardware_complaint_book_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'AUTO_INCREMENT';
+
 --
 -- AUTO_INCREMENT for table `hardware_position`
 --
 ALTER TABLE `hardware_position`
-  MODIFY `hardware_position_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `hardware_position_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT for table `issue_request`
 --
 ALTER TABLE `issue_request`
-  MODIFY `issue_report_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `issue_report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT for table `lab`
 --
 ALTER TABLE `lab`
-  MODIFY `lab_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `lab_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `machine`
 --
 ALTER TABLE `machine`
-  MODIFY `machine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `machine_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
   MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `name`
 --
 ALTER TABLE `name`
-  MODIFY `name_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `name_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 --
 -- AUTO_INCREMENT for table `position`
 --
 ALTER TABLE `position`
-  MODIFY `position_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `position_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `repair_history`
 --
 ALTER TABLE `repair_history`
-  MODIFY `repair_history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `repair_history_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `software`
 --
 ALTER TABLE `software`
   MODIFY `software_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `specification`
 --
 ALTER TABLE `specification`
-  MODIFY `spec_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `spec_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
   MODIFY `sup_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `system_transfer_report`
 --
 ALTER TABLE `system_transfer_report`
   MODIFY `system_transfer_report_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `system_transfer_report_history`
 --
 ALTER TABLE `system_transfer_report_history`
   MODIFY `system_transfer_report_history_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `temp`
 --
 ALTER TABLE `temp`
-  MODIFY `temp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `temp_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `transfer_request`
 --
 ALTER TABLE `transfer_request`
-  MODIFY `transfer_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `transfer_request_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `upgrade_history`
 --
 ALTER TABLE `upgrade_history`
-  MODIFY `upgrade_history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `upgrade_history_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- Constraints for dumped tables
 --
@@ -966,7 +797,6 @@ ALTER TABLE `position`
 -- Constraints for table `repair_history`
 --
 ALTER TABLE `repair_history`
-  ADD CONSTRAINT `cid_fk` FOREIGN KEY (`complaint_book_id`) REFERENCES `complaint_book` (`complaint_book_id`),
   ADD CONSTRAINT `repair_history_ibfk_1` FOREIGN KEY (`machine_id`) REFERENCES `machine` (`machine_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -1019,6 +849,7 @@ ALTER TABLE `upgrade_history`
   ADD CONSTRAINT `FK_proi` FOREIGN KEY (`processori`) REFERENCES `hardware` (`hardware_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_ramf` FOREIGN KEY (`ramf`) REFERENCES `hardware` (`hardware_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_rami` FOREIGN KEY (`rami`) REFERENCES `hardware` (`hardware_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

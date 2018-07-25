@@ -30,15 +30,15 @@
     <div class="page-header">
     <h1>Devices</h1>
     <?php
+        if ( isset($_SESSION['error']) )
+        {
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
+            unset($_SESSION['error']);
+        }
         if ( isset($_SESSION['success']))
         {
-            echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
-                unset($_SESSION['success']);
-        }
-        if ( isset($_SESSION['error']))
-        {
-            echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
-            unset($_SESSION['error']);
+            echo('<p style="color: green;">'.$_SESSION['success']."</p>\n");
+            unset($_SESSION['success']);
         }
     ?>
     <form method="post" class="form-inline">
@@ -81,7 +81,7 @@
                 $stmtread = $pdo->prepare("SELECT * FROM hardware  where name= :name AND state=:state ORDER BY name");
                 $stmtread->execute(array(":name"=>$nameid['name_id'],":state"=>$_POST['state']));
                 echo ("<table class=\"table table-striped\">
-                    <tr> <th>S.no.</th><th>Name</th><th>description</th><th>Company</th><th>GRN</th><th>Supplier</th><th>State</th><th>Action</th></tr>");
+                    <tr> <th>S.no.</th><th>Name</th><th>description</th><th>Company</th><th>GRN</th><th>Supplier</th><th>State</th><th>Date of Purchase</th><th>Action</th></tr>");
                 while ( $row = $stmtread->fetch(PDO::FETCH_ASSOC) )
                 {
                     $stmtn = $pdo->prepare("SELECT name FROM company where company_id = :cname ");
@@ -132,6 +132,9 @@
                     else if($_POST['state']==2)
                         echo "Issued";
                     echo ("</td>")  ; 
+                    echo ("<td>");
+                    echo(htmlentities($row['DOP']));
+                    echo("</td>");
                     echo ("<td>");
                     if($_POST['state']==0)
                     {

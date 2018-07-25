@@ -22,7 +22,7 @@
     {
         if ( strlen($_POST['mac_addr']) < 1 )
         {
-            $_SESSION['error'] = "All Fields are required";
+            $_SESSION['error'] = "All Fields are required<br>";
             header('Location: gorepairmc.php');
             return;
         }
@@ -44,11 +44,14 @@
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 if($row['COUNT(*)'] !== '0')
                 {
-                    $_SESSION['error'] = "Machine already in Repair";
+                    $_SESSION['error'] = "Machine already in Repair<br>";
                     header('Location: gorepairmc.php');
                     return;
                 }
 
+                $stmtn = $pdo->prepare('SELECT * FROM complaint_book WHERE work_for IS NULL AND machine_id = :mid');
+                $stmtn->execute(array(':mid' => $mid));
+                $rown = $stmtn->fetch(PDO::FETCH_ASSOC);
 
                  $stmt = $pdo->prepare('UPDATE machine SET state = "INACTIVE" WHERE machine_id = :mid');
                     $stmt->execute(array(':mid' => $mid));
@@ -56,15 +59,15 @@
                 $stmt = $pdo->prepare('UPDATE position SET final_date = :fdate WHERE machine_id = :mid AND final_date = "1970-01-01"');
                     $stmt->execute(array(':mid' => $mid, ':fdate' => $_POST['date']));
 
-                $stmt = $pdo->prepare('INSERT INTO repair_history (machine_id, initial_date, final_date) VALUES (:mid, :idate, "0000-00-00")');
-                    $stmt->execute(array(':mid' => $mid, ':idate' => $_POST['date']));
+                $stmt = $pdo->prepare('INSERT INTO repair_history (machine_id, initial_date, final_date, complaint_book_id) VALUES (:mid, :idate, "0000-00-00", :cbid)');
+                    $stmt->execute(array(':mid' => $mid, ':idate' => $_POST['date'], ':cbid' => $rown['complaint_book_id']));
 
                 $stmt = $pdo->prepare('UPDATE complaint_book SET work_for = :wf WHERE machine_id = :mid AND work_for IS NULL');
                 $stmt->execute(array(':mid' => $mid, ':wf' => $_POST['work_for']));
 
                 $wf=$_POST['work_for'];
                 $date=$_POST['date'];
-                $_SESSION['success'] = "Machine sent to Repair Successfully";
+                $_SESSION['success'] = "Machine sent to Repair Successfully<br>";
                // header("Location:printcomp.php?mc_id=$mid&wf=$wf&date=$date");
                 echo("<script>
          window.open('printcomp.php?mc_id=$mid&wf=$wf&date=$date', '_blank'); 
@@ -73,7 +76,7 @@
             }
             else
             {
-                $_SESSION['error'] = "Machine does not Exists";
+                $_SESSION['error'] = "Machine does not Exists<br>";
                     header('Location: gorepairmc.php');
                     return;
             }
@@ -108,15 +111,15 @@
     <h1>REPAIR MACHINE</h1>
     </div>
     <?php
-    if ( isset($_SESSION['error']) )
-    {
-        echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
-        unset($_SESSION['error']);
-    }
-    if ( isset($_SESSION['success']))
+        if ( isset($_SESSION['error']) )
         {
-            echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
-                unset($_SESSION['success']);
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
+            unset($_SESSION['error']);
+        }
+        if ( isset($_SESSION['success']))
+        {
+            echo('<p style="color: green;">'.$_SESSION['success']."</p>\n");
+            unset($_SESSION['success']);
         }
     ?>
 

@@ -25,7 +25,7 @@
     }
     if(!isset($_GET['id']))
     {
-        $_SESSION['error']="Transfer Request not Found";
+        $_SESSION['error']="Transfer Request not Found<br>";
         header("Location:home.php");
         return;
     }
@@ -159,22 +159,24 @@
     <div id="error" style="color: red; margin-left: 90px; margin-bottom: 20px;">
         </div>
     <?php
-    if ( isset($_SESSION['error']) )
-    {
-        echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
-        unset($_SESSION['error']);
-    }
+        if ( isset($_SESSION['error']) )
+        {
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
+            unset($_SESSION['error']);
+        }
     ?>
 
-    <form method="POST" action=<?= "servicerpt.php?id=".$_GET['id']?>" class="col-xs-5">
+    <form method="POST" action= "<?= 'servicerpt.php?id='.$_GET['id'] ?>"  class="col-xs-5">
 
     <div class="input-group">
     <span class="input-group-addon">Department </span>
-    <input type="text" name="department" class="form-control" required value="<?= $dept ?>" disabled class="form-control"> </div><br/>
+    <input type="text" value="<?= $dept ?>" disabled class="form-control"> </div><br/>
+    <input type="text" name="department" value="<?= $dept ?>" hidden>
 
     <div class="input-group">
     <span class="input-group-addon">Purpose</span>
-    <input type="text" name="purpose" class="form-control" required value ="<?= $pur ?>" disabled class="form-control"> </div><br/>
+    <input type="text" value ="<?= $pur ?>" disabled class="form-control"> </div><br/>
+    <input type="text" name="purpose" value ="<?= $pur ?>" hidden>
     
     <div class="input-group">
     <span class="input-group-addon">Lab no.</span>
@@ -234,10 +236,10 @@
     <a class ="link-no-format" href="home.php"><div class="btn btn-my">Cancel</div></a>
     </form>
 
-    </div>
-    </div>
+
+
     <div class="page-header">
-        <form method="POST" class="form-inline">
+        <form method="POST" class="form-inline col-xs-12">
             <label id="processor">Processor</label>
                 <select class="form-control" id="processor" name="processor">
                     <option value="-1">Any</option>
@@ -286,7 +288,8 @@
                             //echo "<option>". $row['memory']."</option>";
                         }
                     ?>
-                </s            ipt.onchange="Number(machine"+i+")";elect>
+                    <!--ipt.onchange="Number(machine"+i+")";-->
+                </select>
             <label id="os">OS</label>
                 <select class="form-control" id="os" name="os">
                     <option value='-1'>Any</option>
@@ -301,19 +304,17 @@
                 </select>
             <input class="btn btn-my"type="submit" name="submit">
         </form>
-    <h1>MACHINES</h1>
     </div>
     <?php
-
+        if ( isset($_SESSION['error']) )
+        {
+            echo('<p style="color: red;">'.$_SESSION['error']."</p>\n");
+            unset($_SESSION['error']);
+        }
         if ( isset($_SESSION['success']))
         {
-            echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
-                unset($_SESSION['success']);
-        }
-        if ( isset($_SESSION['error']))
-        {
-            echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
-            unset($_SESSION['error']);
+            echo('<p style="color: green;">'.$_SESSION['success']."</p>\n");
+            unset($_SESSION['success']);
         }
 
         //Now this code does all the magic
@@ -325,7 +326,7 @@
             if($row['COUNT(*)']!=='0')
             {
                 echo ("<table class=\"table table-striped\">
-                    <tr> <th>S.no.</th><th>MAC ADDRESS</th><th>Processor</th><th>RAM</th><th>Storage</th><th>OS</th><th>DOP</th><th>Price</th><th>Location</th> <th>State</th></tr>");
+                    <tr> <th>S.no.</th><th>MAC ADDRESS</th><th>Processor</th><th>RAM</th><th>Storage</th><th>OS</th><th>DOP</th><th>Price</th><th>Location</th></tr>");
                 $stmt=$pdo->query("SELECT * FROM machine");
                 $i=1;
                 while($row=$stmt->fetch(PDO::FETCH_ASSOC))
@@ -360,6 +361,8 @@
                         continue;
                    if($_POST['os']!='-1'&&$row['os']!=$_POST['os'])
                         continue;
+                    if($row['state']=='INACTIVE')
+                        continue;
                      
                     echo ("<tr>");
                     echo ("<td>");
@@ -389,9 +392,6 @@
                     echo ("<td>");
                     echo(htmlentities($rownlabid['name']));
                     echo ("</td>");
-                    echo ("<td>");
-                    echo(htmlentities($row['state']));
-                    echo ("</td>");
                     $i++;
                 }
             }
@@ -400,6 +400,8 @@
     ?>
 
     </div>
+    </div>
+        </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
