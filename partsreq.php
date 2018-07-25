@@ -29,9 +29,28 @@
     {
         if ( isset($_POST['processor']) || isset($_POST['ram']) || isset($_POST['harddisk']) || isset($_POST['keyboard']) || isset($_POST['mouse']) || isset($_POST['monitor']))
         {
+            
+            $stmtch = $pdo->prepare("SELECT * from temp where machine_id = :mid");
+            $stmtch->execute(array(':mid'=> $mc_id));
+            $rowch = $stmtch->fetch(PDO::FETCH_ASSOC);
+            if($rowch == false)
+            {
+                $stmti = $pdo->prepare("INSERT INTO temp (machine_id, completed) VALUES (:mid, 0)");
+                $stmti->execute(array(':mid' => $mc_id));
+
+            }
+
             if(isset($_POST['processor']))
             {
                 $stmt = $pdo->prepare('UPDATE complaint_book SET processor = 1 WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+            }
+            else
+            {   
+                $stmt = $pdo->prepare('UPDATE temp SET processor = NULL WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+
+                $stmt = $pdo->prepare('UPDATE complaint_book SET processor = NULL WHERE machine_id = :mid');
                 $stmt->execute(array(':mid' => $mc_id));
             }
 
@@ -41,9 +60,25 @@
                 $stmt->execute(array(':mid' => $mc_id));
             }
 
+            else
+            {   
+                $stmt = $pdo->prepare('UPDATE temp SET ram = NULL WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+                $stmt = $pdo->prepare('UPDATE complaint_book SET ram = NULL WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+            }
+
             if(isset($_POST['harddisk']))
             {
                 $stmt = $pdo->prepare('UPDATE complaint_book SET harddisk = 1 WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+            }
+
+            else
+            {   
+                $stmt = $pdo->prepare('UPDATE temp SET harddisk = NULL WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+                $stmt = $pdo->prepare('UPDATE complaint_book SET harddisk = NULL WHERE machine_id = :mid');
                 $stmt->execute(array(':mid' => $mc_id));
             }
 
@@ -53,9 +88,25 @@
                 $stmt->execute(array(':mid' => $mc_id));
             }
 
+            else
+            {   
+                $stmt = $pdo->prepare('UPDATE temp SET monitor = NULL WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+                $stmt = $pdo->prepare('UPDATE complaint_book SET monitor = NULL WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+            }
+
             if(isset($_POST['keyboard']))
             {
                 $stmt = $pdo->prepare('UPDATE complaint_book SET keyboard = 1 WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+            }
+
+            else
+            {   
+                $stmt = $pdo->prepare('UPDATE temp SET keyboard = NULL WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+                $stmt = $pdo->prepare('UPDATE complaint_book SET keyboard = NULL WHERE machine_id = :mid');
                 $stmt->execute(array(':mid' => $mc_id));
             }
 
@@ -65,8 +116,33 @@
                 $stmt->execute(array(':mid' => $mc_id));
             }
 
+
+            else
+            {   
+                $stmt = $pdo->prepare('UPDATE temp SET mouse = NULL WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+                $stmt = $pdo->prepare('UPDATE complaint_book SET mouse = NULL WHERE machine_id = :mid');
+                $stmt->execute(array(':mid' => $mc_id));
+            }
+
             $stmtd = $pdo->prepare("UPDATE complaint_book SET DOPR = date('y-m-d') WHERE machine_id = :mid");
             $stmtd->execute(array(':mid' => $mc_id));
+
+            $stmtch = $pdo->prepare("SELECT * from temp where machine_id = :mid");
+            $stmtch->execute(array(':mid'=> $mc_id));
+            $rowch = $stmtch->fetch(PDO::FETCH_ASSOC);
+            if($rowch == false)
+            {
+                $stmti = $pdo->prepare("INSERT INTO temp (machine_id, completed) VALUES (:mid, 0)");
+                $stmti->execute(array(':mid' => $mc_id));
+
+            }
+            else
+            {
+                $stmtd = $pdo->prepare("UPDATE temp SET completed = 0 WHERE machine_id = :mid");
+                $stmtd->execute(array(':mid' => $mc_id));
+                
+            }
 
             $_SESSION['success'] = "Request Sent";
             header('Location: home.php');

@@ -22,7 +22,7 @@
 
     if ( isset($_POST['delete']) )
     {
-        $sql = "UPDATE complaint_book SET completed = -1 WHERE complaint_book_id = :id";
+        $sql = "UPDATE complaint_book SET processor = NULL, ram = NULL, harddisk = NULL, monitor = NULL, keyboard = NULL, mouse = NULL WHERE complaint_book_id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':id' => $_GET['cb_id']));
         $_SESSION['success'] = 'Part Request Denied<br>';

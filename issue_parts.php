@@ -155,7 +155,7 @@
                 $stmtname->execute(array(":nid"=>$rowq['name']));
                 $rowname=$stmtname->fetch(PDO::FETCH_ASSOC);
 
-                if($rowq['state']!='0' || $rowname['name']!='Mouse')
+                if($rowq['state']!='0' || $rowname['name']!='mouse')
                 {
                     $_SESSION['error'] = "Wrong Hardware ID selected";
                     header("Location:home.php");
@@ -167,7 +167,7 @@
         if($flag==0)
         {
                 $date=date('y-m-d');
-                $stmt = $pdo->prepare('INSERT INTO temp(`machine_id`, `processor`, `ram`, `mouse`, `harddisk`, `keyboard`, `monitor`) VALUES (:mid, :processor, :ram, :mouse, :harddisk, :keyboard, :monitor)');
+                $stmt = $pdo->prepare('INSERT INTO temp(`machine_id`, `processor`, `ram`, `mouse`, `harddisk`, `keyboard`, `monitor`, `completed`) VALUES (:mid, :processor, :ram, :mouse, :harddisk, :keyboard, :monitor, 1)');
                     $stmt->execute(array(':mid' => $_GET['mc_id'], ':processor' => $_POST['processor'], ':ram' => $_POST['ram'], ':mouse' => $_POST['mouse'], ':harddisk' => $_POST['harddisk'], ':keyboard' => $_POST['keyboard'], ':monitor' => $_POST['monitor']));
                 $_SESSION['success'] = "Parts Issued Successfully";
                 header("Location:home.php");
@@ -229,7 +229,7 @@
                 <div class='input-group-addon'>
                     Processor
                 </div>
-                <input type='text' name='processor' required='' class='form-control' placeholder='Enter Hardware ID'>
+                <input type='text' name='processor' required='' class='form-control' placeholder='Enter Hardware ID' >
             </div><br>";
         if ($row['ram']=='1')
         echo "
@@ -237,7 +237,7 @@
             <div class='input-group-addon'>
                 Ram
             </div>
-            <input type='text' name='ram' required='' class='form-control placeholder='Enter Hardware ID''>
+            <input type='text' name='ram' required='' class='form-control' placeholder='Enter Hardware ID'>
         </div><br>";
         if ($row['harddisk']=='1')
             echo "
@@ -245,7 +245,7 @@
                 <div class='input-group-addon'>
                     Harddisk
                 </div>
-                <input type='text' name='harddisk' required='' class='form-control placeholder='Enter Hardware ID''>
+                <input type='text' name='harddisk' required='' class='form-control' placeholder='Enter Hardware ID'>
             </div><br>";
         if ($row['mouse']=='1')
             echo "
@@ -253,7 +253,7 @@
                 <div class='input-group-addon'>
                     Mouse
                 </div>
-                <input type='text' name='mouse' required='' class='form-control placeholder='Enter Hardware ID''>
+                <input type='text' name='mouse' required='' class='form-control' placeholder='Enter Hardware ID'>
             </div><br>";
         if ($row['keyboard']=='1')
             echo "
@@ -261,7 +261,7 @@
                 <div class='input-group-addon'>
                     Keyboard
                 </div>
-                <input type='text' name='keyboard' required='' class='form-control placeholder='Enter Hardware ID''>
+                <input type='text' name='keyboard' required='' class='form-control' placeholder='Enter Hardware ID'>
             </div><br>";
         if ($row['monitor']=='1')
             echo "
@@ -269,14 +269,14 @@
                 <div class='input-group-addon'>
                     Monitor
                 </div>
-                <input type='text' name='monitor' required='' class='form-control placeholder='Enter Hardware ID''>
+                <input type='text' name='monitor' required='' class='form-control' placeholder='Enter Hardware ID'>
             </div><br>";
         ?>
         <input type="submit" name="submit" class="btn btn-my">
     </form>
     
     <form  method="post" action="" class="form-inline col-xs-12" >
-            <label id="processor">Device Name</label>
+            <label id="processor">Search Device </label>
                 <select class="form-control" id="chillana" name="chillana" >
                     <?php
                         $qr=$pdo->query("SELECT DISTINCT(name) from name");
@@ -326,7 +326,7 @@
                     echo ("</td>");
                     echo ("<td>");
 
-                    $stmtn1 = $pdo->prepare("SELECT spec FROM specification where name_id = :name ");
+                    $stmtn1 = $pdo->prepare("SELECT spec FROM specification where spec_id = :name ");
                     $stmtn1->execute(array(':name' => $row['description']));
                     $cname1 = $stmtn1->fetch(PDO::FETCH_ASSOC);
                     echo(htmlentities($cname1['spec']));

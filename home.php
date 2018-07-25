@@ -392,7 +392,6 @@
 
                 $stmtcnt = $pdo->query("SELECT COUNT(*) FROM complaint_book WHERE completed IS NULL AND (processor IS NOT NULL OR ram IS NOT NULL OR harddisk IS NOT NULL OR monitor IS NOT NULL OR keyboard IS NOT NULL OR mouse IS NOT NULL)");
                 $row = $stmtcnt->fetch(PDO::FETCH_ASSOC);
-
                 if($row['COUNT(*)']!=='0')
                 {
                     echo "<h2>Part Requests</h2>";
@@ -400,14 +399,14 @@
                     $stmtread = $pdo->query("SELECT * FROM complaint_book WHERE completed IS NULL AND (processor IS NOT NULL OR ram IS NOT NULL OR harddisk IS NOT NULL OR monitor IS NOT NULL OR keyboard IS NOT NULL OR mouse IS NOT NULL)");
                     echo ("<table class=\"table table-striped\">
                         <tr> <th>S.no.</th><th>Date of Request</th><th>MAC_ADDR</th><th>Work For</th><th>Processor</th><th>Ram</th><th>Hard Disk</th><th>Monitor</th><th>Keyboard</th><th>Mouse</th><th>Action</th> </tr>");
-                    while ( $row = $stmtread->fetch(PDO::FETCH_ASSOC) )
+                    while ( $rowpartsdisplay = $stmtread->fetch(PDO::FETCH_ASSOC) )
                     {
                         $stmtr = $pdo->prepare("SELECT MAC_ADDR FROM machine WHERE machine_id = :mid ");
-                        $stmtr->execute(array(':mid' => $row['machine_id']));
+                        $stmtr->execute(array(':mid' => $rowpartsdisplay['machine_id']));
                         $rowr = $stmtr->fetch(PDO::FETCH_ASSOC);
 
-                        $stmtt = $pdo->prepare("SELECT * FROM temp WHERE machine_id = :mid ");
-                        $stmtt->execute(array(':mid' => $row['machine_id']));
+                        $stmtt = $pdo->prepare("SELECT * FROM temp WHERE machine_id = :mid AND completed = 1");
+                        $stmtt->execute(array(':mid' => $rowpartsdisplay['machine_id']));
                         $rowt = $stmtt->fetch(PDO::FETCH_ASSOC);
                         if($rowt == false)
                         {
@@ -416,14 +415,14 @@
                             echo($i);
                             echo("</td>");
                             echo ("<td>");
-                            echo(htmlentities($row['Date_of_complaint']));
+                            echo(htmlentities($rowpartsdisplay['Date_of_complaint']));
                             echo ("</td>");
                             echo ("<td>");
                             echo(htmlentities($rowr['MAC_ADDR']));
                             echo ("</td>");
 
                             $stmtwf = $pdo->prepare("SELECT * FROM member WHERE member_id = :mid ");
-                            $stmtwf->execute(array(':mid' => $row['work_for']));
+                            $stmtwf->execute(array(':mid' => $rowpartsdisplay['work_for']));
                             $rowwf = $stmtwf->fetch(PDO::FETCH_ASSOC);
 
                             echo ("<td>");
@@ -432,7 +431,7 @@
                             echo(htmlentities($rowwf['last_name']));
                             echo ("</td>");
                             echo ("<td>");
-                            if($row['processor'] == NULL)
+                            if($rowpartsdisplay['processor'] == NULL)
                             {
                                 echo("NO");
                             }
@@ -442,7 +441,7 @@
                             }
                             echo ("</td>");
                             echo ("<td>");
-                            if($row['ram'] == NULL)
+                            if($rowpartsdisplay['ram'] == NULL)
                             {
                                 echo("NO");
                             }
@@ -452,7 +451,7 @@
                             }
                             echo ("</td>");
                             echo ("<td>");
-                            if($row['harddisk'] == NULL)
+                            if($rowpartsdisplay['harddisk'] == NULL)
                             {
                                 echo("NO");
                             }
@@ -462,7 +461,7 @@
                             }
                             echo ("</td>");
                             echo ("<td>");
-                            if($row['monitor'] == NULL)
+                            if($rowpartsdisplay['monitor'] == NULL)
                             {
                                 echo("NO");
                             }
@@ -472,7 +471,7 @@
                             }
                             echo ("</td>");
                             echo ("<td>");
-                            if($row['keyboard'] == NULL)
+                            if($rowpartsdisplay['keyboard'] == NULL)
                             {
                                 echo("NO");
                             }
@@ -482,7 +481,7 @@
                             }
                             echo ("</td>");
                             echo ("<td>");
-                            if($row['mouse'] == NULL)
+                            if($rowpartsdisplay['mouse'] == NULL)
                             {
                                 echo("NO");
                             }
@@ -492,7 +491,7 @@
                             }
                             echo ("</td>");
                             echo ("<td>");
-                            echo('<a class="link-black" href="issue_parts.php?cb_id='.$row['complaint_book_id'].'&mc_id='.$row['machine_id'].'">'. 'Issue Parts' . '</a>' . ' / ' . '<a class="link-black" href="deny_parts.php?cb_id='.$row['complaint_book_id'].'">'. 'Deny' . '</a>');
+                            echo('<a class="link-black" href="issue_parts.php?cb_id='.$rowpartsdisplay['complaint_book_id'].'&mc_id='.$rowpartsdisplay['machine_id'].'">'. 'Issue Parts' . '</a>' . ' / ' . '<a class="link-black" href="deny_parts.php?cb_id='.$rowpartsdisplay['complaint_book_id'].'">'. 'Deny' . '</a>');
 
                             echo ("</td>");
                         }
