@@ -55,10 +55,13 @@
                 $stmtn = $pdo->prepare('SELECT * from position WHERE machine_id = :mid ORDER BY position_id DESC');
                 $stmtn->execute(array(':mid' => $mid));
                 $rown=$stmtn->fetch(PDO::FETCH_ASSOC);
-                $lid=$rown['lab_id'];
+                if($rown != FALSE)
+                {
+                    $lid=$rown['lab_id'];
 
-                $stmt = $pdo->prepare('INSERT INTO position (machine_id, lab_id, initial_date, final_date) VALUES (:mid, :lid, :idate, :fdate)');
-                        $stmt->execute(array(':mid' => $mid, ':lid' => $lid, ':idate' => $_POST['date'], ':fdate' => "1970-01-01"));
+                    $stmt = $pdo->prepare('INSERT INTO position (machine_id, lab_id, initial_date, final_date) VALUES (:mid, :lid, :idate, :fdate)');
+                            $stmt->execute(array(':mid' => $mid, ':lid' => $lid, ':idate' => $_POST['date'], ':fdate' => "1970-01-01"));
+                }
 
                 $stmtc = $pdo->prepare('SELECT * FROM temp WHERE machine_id = :mid');
                 $stmtc->execute(array(':mid' => $mid));

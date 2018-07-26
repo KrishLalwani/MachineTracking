@@ -167,7 +167,7 @@
         if($flag==0)
         {
                 $date=date('y-m-d');
-                $stmt = $pdo->prepare('INSERT INTO temp(`machine_id`, `processor`, `ram`, `mouse`, `harddisk`, `keyboard`, `monitor`, `completed`) VALUES (:mid, :processor, :ram, :mouse, :harddisk, :keyboard, :monitor, 1)');
+                $stmt = $pdo->prepare('UPDATE temp SET processor = :processor, ram = :ram, mouse = :mouse, harddisk = :harddisk, keyboard = :keyboard, monitor = :monitor, completed = 1 WHERE machine_id = :mid');
                     $stmt->execute(array(':mid' => $_GET['mc_id'], ':processor' => $_POST['processor'], ':ram' => $_POST['ram'], ':mouse' => $_POST['mouse'], ':harddisk' => $_POST['harddisk'], ':keyboard' => $_POST['keyboard'], ':monitor' => $_POST['monitor']));
                 $_SESSION['success'] = "Parts Issued Successfully";
                 header("Location:home.php");

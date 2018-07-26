@@ -87,7 +87,7 @@
                 echo($i);
                 echo("</td>");
                 echo ("<td>");
-                echo(htmlentities($_POST['mac_addr']));
+                echo(htmlentities($_GET['mac_addr']));
                 echo ("</td>");
                 echo ("<td>");
                 echo(htmlentities($lname));

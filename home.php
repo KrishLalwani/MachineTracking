@@ -542,7 +542,7 @@
                         $stmtc->execute(array(':mid' => $row['machine_id']));
                         $rowc = $stmtc->fetch(PDO::FETCH_ASSOC);
 
-                        $stmtc2 = $pdo->prepare("SELECT * FROM temp WHERE machine_id = :mid ");
+                        $stmtc2 = $pdo->prepare("SELECT * FROM temp WHERE machine_id = :mid AND completed = 1");
                         $stmtc2->execute(array(':mid' => $row['machine_id']));
                         $rowc2 = $stmtc2->fetch(PDO::FETCH_ASSOC);
                         
@@ -555,7 +555,8 @@
                         }
                         else if($rowc2 == false)
                         {
-                            echo('<a class="link-black "href="partsreq.php?mc_id='.$row['machine_id'].'">'. 'Parts Required' . '</a>');
+                            echo('<a class="link-black "href="partsreq.php?mc_id='.$row['machine_id'].'">'. 'Parts Required' . '/</a>');
+                            echo('<a class="link-black "href="partsasked.php?mc_id='.$row['machine_id'].'">'. 'Parts Requested' . '</a>');
                             echo ("</td>");    
                         }
                         else
