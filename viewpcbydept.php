@@ -51,7 +51,7 @@
             $stmtread = $pdo->prepare("SELECT lab_id FROM lab where  department = :dpt");
             $stmtread->execute(array(':dpt' => $_GET['dept']));
             echo ("<table class=\"table table-striped\">
-                <tr> <th>S.no.</th><th>MAC ADDRESS</th><th>Processor</th><th>RAM</th><th>Storage</th><th>OS</th><th>Keyboard</th><th>Mouse</th><th>Monitor</th><th>DOP</th><th>Price</th> <th>State</th> </tr>");
+                <tr> <th>S.no.</th><th>MAC ADDRESS</th><th>Processor</th><th>RAM</th><th>Storage</th><th>OS</th><th>Keyboard</th><th>Mouse</th><th>Monitor</th><th>DOP</th><th>Price</th><th>Lab</th> <th>State</th> </tr>");
             while ( $row = $stmtread->fetch(PDO::FETCH_ASSOC) )
             {
                 $pcf=$pdo->prepare("SELECT * FROM position where lab_id=:labid AND final_date='1970-01-01'");
@@ -142,6 +142,10 @@
                         $monitor = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
                 $monitor->execute(array(':spec_id' => $monitorn['description']));
                 $monitorn = $monitor->fetch(PDO::FETCH_ASSOC);
+                $labname=$pdo->prepare("SELECT name FROM lab WHERE lab_id = :lab_id");
+                $labname->execute(array(":lab_id"=>$row['lab_id']));
+                $labname=$labname->fetch(PDO::FETCH_ASSOC);
+                $labname=$labname['name'];
                 echo($monitorn['spec']);
                         echo ("</td>");
                         
@@ -152,7 +156,9 @@
                         echo ("<td>");
                         echo(htmlentities($row2['price']));
                         echo ("</td>");
-                        
+                        echo("<td>");
+                        echo(htmlentities($labname));
+                        echo("</td>");
                         echo ("<td>");
                         echo(htmlentities($row2['state']));
                         echo ("</td>");
@@ -162,6 +168,70 @@
             }
             echo('</table>');
         }
+                echo("<h2>Devices</h2>");
+        $stmtread = $pdo->query("SELECT hardware.`hardware_id`, hardware.`company`, hardware.`description`, hardware.`price`, hardware.`grn`, hardware.`name`, hardware.`state`, hardware.`supplier`, hardware_position.`lab_id` FROM hardware JOIN hardware_position ON hardware.hardware_id = hardware_position.hardware_id  AND (hardware_position.final_date = '0000-00-00' OR hardware_position.final_date = '1970-01-01') ORDER BY name");
+                echo ("<table class=\"table table-striped\">
+                    <tr> <th>S.no.</th><th>Name</th><th>description</th><th>Company</th><th>GRN</th><th>Supplier</th><th>Lab</th></tr>");
+                while ( $row = $stmtread->fetch(PDO::FETCH_ASSOC) )
+                {
+                    $stmtdept = $pdo->prepare("SELECT department FROM lab WHERE lab_id = :labid");
+                    $stmtdept->execute(array(":labid"=>$row['lab_id']));
+                    $row2 = $stmtdept->fetch(PDO::FETCH_ASSOC);
+                    if($row2['department']!=$_GET['dept'])
+                        continue;
+                    $stmtn = $pdo->prepare("SELECT name FROM company where company_id = :cname ");
+                    $stmtn->execute(array(':cname' => $row['company']));
+                    $cname = $stmtn->fetch(PDO::FETCH_ASSOC);
+
+                    $supplier = $pdo->prepare("SELECT supname FROM supplier where sup_id = :sid");
+                    $supplier->execute(array(':sid' => $row['supplier']));
+                    $supplierid = $supplier->fetch(PDO::FETCH_ASSOC);
+
+                    $spec = $pdo->prepare("SELECT spec FROM specification where spec_id = :spec_id");
+                    $spec->execute(array(':spec_id' => $row['description']));
+                    $specn = $spec->fetch(PDO::FETCH_ASSOC);
+
+                    $namefind = $pdo->prepare("SELECT name.name FROM name JOIN hardware ON hardware.name = name.name_id AND hardware.hardware_id = :hid");
+                    $namefind->execute(array(":hid"=>$row['hardware_id']));
+                    $namefind = $namefind->fetch(PDO::FETCH_ASSOC);
+                $labname=$pdo->prepare("SELECT name FROM lab WHERE lab_id = :lab_id");
+                $labname->execute(array(":lab_id"=>$row['lab_id']));
+                $labname=$labname->fetch(PDO::FETCH_ASSOC);
+                $labname=$labname['name'];
+                    echo ("<tr>");
+                    echo ("<td>");
+                    echo($i);
+                    echo("</td>");
+                    
+                    echo ("<td>");
+                    echo(htmlentities($namefind['name']));
+                    echo ("</td>");
+
+                
+                    echo ("<td>");
+                    echo($specn['spec']);
+                    echo ("</td>");
+               
+
+                   // echo ("<td>");
+                   // echo(htmlentities($row['description']));
+                    //echo ("</td>");
+
+                    echo ("<td>");
+                    echo(htmlentities($cname['name']));
+                    echo ("</td>");
+                    echo ("<td>");
+                    echo(htmlentities($row['grn']));
+                    echo ("</td>");
+                    echo ("<td>");
+                    echo(htmlentities($supplierid['supname']));
+                    echo ("</td>");
+                    echo ("<td>");
+                        echo(htmlentities($labname));
+                    echo("</td>");   
+                    $i++;
+                }
+                echo('</table>');
     ?>
 
     </div>
