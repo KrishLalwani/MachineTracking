@@ -27,6 +27,7 @@
                             <li><a href="new_machines.php">View Unpositioned Machine</a></li>
                             <li><a href="viewonrepairpc.php">View Machines on Repair</a></li>
                             <li><a href="posmc.php">Position New Machines</a></li>
+                            <li><a href="scrapmc.php">Scrap Machine</a></li>
                         </ul>
                     </li>
 
@@ -82,6 +83,10 @@
 
                         </ul>
                     </li>
+                    <li class="">
+                        <a href="techreport.php">Generate Technician Report</a>
+                    </li>
+
                     <hr>
                     <li>
                         <a href="logout.php">Logout</a>
