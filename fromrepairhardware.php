@@ -105,11 +105,11 @@
             unset($_SESSION['success']);
         }
 
-         $checkinactive=$pdo ->query("SELECT count(*) from machine where state='INACTIVE'");
+         $checkinactive=$pdo ->query("SELECT COUNT(*) from hardware where state='3'");
         $rowcheck=$checkinactive->fetch(PDO::FETCH_ASSOC);
-        if($rowcheck['count(*)']==0)
+        if($rowcheck['COUNT(*)']==0)
         {
-            $_SESSION['error']="None of the machines are sent for repairing<br>";
+            $_SESSION['error']="None of the hardware are sent for repairing<br>";
             header('Location: home.php');
             return;
         }

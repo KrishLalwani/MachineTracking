@@ -357,7 +357,7 @@
     
     <!--div class="input-group">
     <span class="input-group-addon">Date of Purchase</span-->
-    <input type="text"  name="dop" hidden="" id="date" value = '<?= date('y-m-d') ?>'> <!--/div><br/-->
+    <input type="text"  name="dop"  id="date" value = '<?= date('y-m-d') ?>'> <!--/div><br/-->
     
 
     <div class="input-group">

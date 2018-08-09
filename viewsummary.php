@@ -98,7 +98,7 @@
         if($row['COUNT(*)']!=='0')
         {
             $i=1;
-            $stmtread = $pdo->query("SELECT *,COUNT(*) FROM machine GROUP BY grn,state,DOP ORDER BY DOP");
+            $stmtread = $pdo->query("SELECT *,COUNT(*) FROM machine GROUP BY grn,state ORDER BY DOP");
             echo ("<table class=\"table table-striped\">
                 <tr> <th>S.no.</th><th>Processor</th><th>RAM</th><th>Storage</th><th>OS</th><th>Keyboard</th><th>Mouse</th><th>Monitor</th><th>DOP</th><th>Price</th> <th>State</th><th>GRN</th><th>Quantity</th></tr>");
             while ( $row = $stmtread->fetch(PDO::FETCH_ASSOC) )

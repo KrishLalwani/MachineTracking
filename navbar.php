@@ -1,4 +1,3 @@
-
             <!-- Sidebar Holder -->
             <nav id="sidebar">
                 <div class="sidebar-header">

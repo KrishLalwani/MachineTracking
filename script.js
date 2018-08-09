@@ -226,7 +226,7 @@ function conp(val)
 }
 function labs(val)
 {
-	n=/^[a-zA-Z0-9]+$/;
+	n=/^[a-zA-Z0-9 ]+$/;
 	if(n.test(document.getElementById(val).value)||document.getElementById(val).value=="")	
 	{
 		document.getElementById('error').innerHTML=null;

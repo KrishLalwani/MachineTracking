@@ -75,9 +75,8 @@
             <th>Prirority(No. of Days)</th>
             <th>Remarks</th>
             <th>Complaint By</th>
-            <th>Completed<th>
             <th>Parts Requested</th>
-            <th>Parts Alloted</th>
+            <th>Completed<th>
             ";
             echo "</tr>";
             $i=1;
@@ -110,17 +109,18 @@
                     echo $row['complaint_by'];
                 echo "</td>";
                 echo "<td>";
-                    if($row['completed'] == '1')
-                        echo "YES";
-                    else
-                        echo "NO";
-                echo "</td>";
-                echo "<td>";
                     if(!is_null($row['processor'])||!is_null($row['ram'])||!is_null($row['harddisk'])||!is_null($row['mouse'])||!is_null($row['keyboard'])||!is_null($row['monitor']))
                         echo "YES";
                     else  
                         echo "NO";
                 echo "</td>";
+                echo "<td>";
+                    if($row['completed'] == '1')
+                        echo "YES";
+                    else
+                        echo "NO";
+                echo "</td>";
+
                 echo "</tr>";
             }
             echo "</table>";
