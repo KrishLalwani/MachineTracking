@@ -1,0 +1,40 @@
+name: PHP Composer
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+    # Docs: https://getcomposer.org/doc/articles/scripts.md
+
+    # - name: Run test suite
+    #   run: composer run-script test
+    - name: Heroku Review App Deployment Status
+      uses: niteoweb/reviewapps-deploy-status@v1.2.0
+      with:
+        # Comma separated list of checks to perform.
+        checks: # optional, default is build, response
+        # Delay for the build stage of the review app.
+        build_time_delay: # optional, default is 5
+        # Delay for the app to load and start serving after it is built.
+        load_time_delay: # optional, default is 5
+        # Interval to repeat the deployment check in seconds.
+        interval: # optional, default is 10
+        # Comma separated status which can be accepted.
+        accepted_responses: # optional, default is 200
+        # Maximum waiting time to fetch the deployments.
+        deployments_timeout: # optional, default is 120
+        # Maximum time to spend retrying the HTTP response check until it succeeds.
+        publish_timeout: # optional, default is 120
